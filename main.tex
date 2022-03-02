@@ -206,6 +206,94 @@ We provide a proof which uses some basic ideas from linear algebra.
 Note that Lemma \ref{expander mixing lemma for ERq} does not give us any information when $|S| = O( q)$.  Lemma \ref{expander mixing lemma for ERq} is not strong enough for our purposes in terms of proving Corollary \ref{abl conjecture}.
 
 \section{Proof of Theorem \ref{dense subgraph} and Corollary \ref{abl conjecture}}\label{proofs}
+
+In this section we prove Theorem \ref{dense subgraph} and Corollary \ref{abl conjecture}.
+
+
+\begin{proof}[Proof of Theorem \ref{dense subgraph}]
+    Let $\Pi$ be a finite projective plane of order $q$ that contains an oval $H$.  Let $\pi$ be a polarity of $\Pi$ and let $G$ be the corresponding polarity graph.  We omit the subscript $\pi$ for notational convenience.  For $v \in V(G)$, write $\Gamma (v)$ for the set of neighbors of $v$ in $G$.  Given $S \subset H$, let
+
+    $$ Y_S = \{ v \in V(G) : | \Gamma (v) \cap S | = 2 \} $$
+
+    and $X_S = Y_S \backslash S$.  Since $H$ is an oval, the number of secants to $H$ is $\binom{q+1}{2}$.
+    Thus, for any pair of distinct vertices $s_i , s_j \in H$, there is a unique vertex $t_{i,j} \in Y_H$ such that
+    $t_{i,j}$ is adjacent to both $s_i$ and $s_j$.  The vertex $t_{i,j}$ corresponds to the unique secant that intersects $H$ at
+    $s_i$ and $s_j$.  Further, the only neighbors of $t_{i,j}$ in $H$ are $s_i$ and $s_j$ and so
+
+    $$ |Y_S | = \binom{ |S| }{2} $$
+
+    for any $S \subset H$.  This implies
+
+    \begin{equation}\label{2:eq0}
+        |S| + |X_S| \geq |Y_S| = \binom{ |S| }{2}
+    \end{equation}
+
+    When $S = H$, we get that $|X_H| \geq \binom{q+1}{2}  - (q  + 1)$ so by Lemma \ref{expander mixing lemma for ERq},
+
+    \begin{equation}\label{22:eq1}
+        e( G[ X_H] ) \geq \frac{q^3}{8} - O (q^{5/2})
+    \end{equation}
+
+    Let $m \in \{ 1,2 , \dots ,  q + 1 \}$.  Choose $S \subset H$ uniformly at random from the set of all subsets of $H$ of size $m$.  If
+    $e(S , X_S)$ is the number of edges with one endpoint in $S$ and the other in $X_S$, then using (\ref{2:eq0}),
+
+    \begin{equation}\label{2:eq1}
+        e(S , X_S) = 2 |X_S| \geq 2 \binom{ |S| }{2} - 2 |S| = 2 \binom{m}{2} - 2m
+    \end{equation}
+
+    If $e = uv \in E( G[X_H] )$, then the at most four vertices in $( \Gamma (u) \cap H ) \cup ( \Gamma (v) \cap H )$ must be chosen in $S$ in order to have $e \in E( G [ X_S] )$.  Therefore,
+
+    $$ \mathbb{P} ( e \in E (G[  X_S ] ) ) \geq \frac{ \binom{q-3}{m-4} }{ \binom{q+1}{m}} = \frac{ m ( m - 1) ( m - 2)( m - 3) }{ (q + 1) q ( q - 1) ( q- 2) } \geq \frac{ m ( m -1) ( m -2) ( m - 3) }{q^4} $$
+
+    By (\ref{22:eq1}) and linearity of expectation,
+
+    \begin{equation}\label{2:eq2}
+        \mathbb{E} ( e (G [ X_S] ) ) \geq \frac{ m ( m - 1)(m-2)(m-3) }{8q} - O \left( \frac{m^4}{q^{3/2}} \right)
+    \end{equation}
+
+    Combining (\ref{2:eq1}) and (\ref{2:eq2}), we see that there is a choice of $S \subset H$ with $|S| = m$ and
+    $$ e ( G[ S \cup X_S ] ) \geq 2 \binom{ m }{2} + \frac{ m ( m - 1)(m-2)(m-3) }{8q} - O \left( \frac{m^4}{q^{3/2}}+m \right) $$
+    Lastly, observe $|S \cup X_S| \leq |S| + |Y_S| = m + \binom{m}{2}$.
+\end{proof}
+
+Now we use Theorem \ref{dense subgraph} to prove Corollary \ref{abl conjecture}.  We first prove a simple inequality that
+expresses the number of edges of an induced subgraph of a polarity graph in terms of the removed set of vertices.
+
+Let $G$ be a polarity graph of a projective plane of order $q$ and let $X\subset V(G)$.
+The number of edges in the graph $G \setminus X$ is
+
+$$ e(G) - e(X) - e(X, X^c) $$
+
+where $e(X)$ includes counting loops in $G$. Since
+
+$$ e(X) + e(X, X^c) = \sum_{x\in X} d(x) - e(X) \leq (q+1)|X| - e(X), $$
+
+we have
+
+\begin{equation}\label{2:eq3}
+    e(G \setminus X ) \geq e(G) - (q + 1) |X| + e(X).
+\end{equation}
+
+
+\begin{proof}[Proof of Corollary \ref{abl conjecture}]
+    Let $q$ be a prime power and $ER_q$ be the Erd\H{o}s-R\'{e}nyi orthogonal polarity graph.  It is known that this graph has
+    $\frac{1}{2}q(q+1)^2$ edges.  Let $m$ be the largest integer satisfying $m+\binom{m}{2} \leq 2q+3$.
+    Then $m = \lfloor \sqrt{4q + 25/4}  - 1/2 \rfloor$ and
+
+    $$ 2 \binom{m}{2} + \frac{ m (m - 1)(m-2)(m-3) }{q^4} = 6q - O(q^{1/2} ) $$
+
+    By Theorem \ref{dense subgraph}, there is a set $S \subset V(ER_q)$ with $|S| = m + \binom{m}{2}$ such that
+    $S$ induces a subgraph with at least $6q - O (q^{1/2})$ edges.  Let $X = S \cup S'$ where $S'$ is an arbitrarily chosen set of
+    $2q + 3 - |S|$ vertices disjoint from $S$.  Then by (\ref{2:eq3}),
+
+    $$ e( ER_q \setminus X) \geq \frac{1}{2}q(q+1)^3 - (q+1)(2q +3) + 6q - O(q^{1/2} ) =  \frac{1}{2}q^3 - q^2 + \frac{3}{2}q - O\left(q^{1/2}\right) $$
+
+    Since $ER_q$ is $C_4$-free, we have
+
+    $$ \textup{ex}( q^2 - q - 2 , C_4)  \geq \frac{1}{2}q^3 - q^2 + \frac{3}{2}q - O\left(q^{1/2}\right) $$
+\end{proof}
+
+
 \section{Concluding remarks}\label{conclusion}
 \begin{thebibliography}{10}
 
