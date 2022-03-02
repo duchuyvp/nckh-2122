@@ -4,7 +4,11 @@
 \usepackage[T5]{fontenc}
 % \usepackage[english, vietnamese]{babel}
 \usepackage{tikz}
-\usepackage[left=2.00cm, right=2.00cm, top=2.00cm, bottom=2.00cm]{geometry}
+\setlength{\topmargin}{-.5in}
+\setlength{\textheight}{9in}
+\setlength{\oddsidemargin}{.125in}
+\setlength{\textwidth}{6.25in}
+% \usepackage[left=2.00cm, right=2.00cm, top=2.00cm, bottom=2.00cm]{geometry}
 \usepackage[unicode]{hyperref}
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -45,20 +49,31 @@
 
 \setstretch{1.25}
 
-\newtheorem{theorem}{Theorem}
-\newtheorem{corollary}{Corollary}
-\newtheorem{lemma}{Lemma}
-\newtheorem*{remark}{Remark}
-\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{acknowledgement}[theorem]{Acknowledgement}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{case}[theorem]{Case}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{conclusion}[theorem]{Conclusion}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{cor}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{defin}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{prop}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{solution}[theorem]{Solution}
+\newtheorem{summary}[theorem]{Summary}
 \newtheorem*{recap}{Recap}
-
-\newenvironment{solution}
-  {\renewcommand\qedsymbol{$\blacktriangleleft $}\begin{proof}[\textcolor{Mycolor}{Solution}]}
-  {\end{proof}}
-
-\newcounter{example}
-\newenvironment{example}[1][]{\refstepcounter{example}\par\medskip
-    \noindent \textcolor{Mycolor}{\textbf{EXAMPLE~\theexample. #1}} \rmfamily}{\medskip}
 
 \newmdenv[linecolor=black,skipabove=\topsep,skipbelow=\topsep,
 leftmargin=-5pt,rightmargin=-5pt,
@@ -96,6 +111,7 @@ innerleftmargin=5pt,innerrightmargin=5pt]{textbox}
 
 \begin{document}
 \maketitle
+\vspace{-5mm}
 
 \begin{abstract}
     In this note, we show that for any $m \in \{1,2, \dots , q +1 \}$, if $G$ is a polarity graph of a projective plane of order $q$ that has an oval, then $G$ contains a subgraph on $m + \binom{m}{2}$ vertices with $m^2+\frac{m^4}{8q} - O ( \frac{m^4}{q^{3/2} } +m )$ edges. As an application, we give the best known lower bounds on the Tur\'{a}n number $\mathrm{ex}(n, C_4)$ for certain values of $n$. In particular, we disprove a conjecture of Abreu, Balbuena, and Labbate concerning $\mathrm{ex}(q^2-q-2, C_4)$ where $q$ is a power of $2$.
@@ -103,28 +119,55 @@ innerleftmargin=5pt,innerrightmargin=5pt]{textbox}
 
 \section{Introduction}
 
-Let $F$ be a graph. A graph $G$ is said to be $F-free$ if $G$ does not contain $F$ as a subgraph.
+Let $F$ be a graph.  A graph $G$ is said to be $F$-\emph{free} if $G$ does not contain $F$ as a subgraph.  Let $\textup{ex}(n , F)$ denote the \emph{Tur\'{a}n number} of $F$, which is the maximum number of edges in an $n$-vertex $F$-free graph.  Write $\textup{Ex}(n  , F)$ for the family of $n$-vertex graphs that are $F$-free and have $\textup{ex}(n , F)$ edges.  Graphs in the family $\textup{Ex}(n , F)$ are called \emph{extremal graphs}.  Determining $\textup{ex}( n , F)$ for different graphs $F$ is one of the most well-studied problems in extremal graph theory.  A case of particular interest is when $F = C_4$, the cycle on four vertices.  A well known result of K\H{o}vari, S\'{o}s, and Tur\'{a}n \cite{kst} implies that $\textup{ex}(n , C_4) \leq \frac{1}{2} n^{3/2} + \frac{1}{2}n$.  Brown \cite{b}, and Erd\H{o}s, R\'{e}nyi, and S\'{o}s \cite{ers} proved that
+$\textup{ex}( q^2 + q + 1 , C_4) \geq \frac{1}{2} q (q + 1)^2$ whenever $q$ is a power of a prime.  It follows that
+$\textup{ex}(n , C_4) = \frac{1}{2} n^{3/2} + o( n^{3/2} )$.  For more on Tur\'{a}n numbers of bipartite graphs, we recommend the survey of F\"{u}redi and Simonovits \cite{fs}.
 
-Let ex$(n, F)$ denote the $Turán number$ of $F$, which is the maximum number of edges
-in an $n$-vertex $F-free$ graph. Write Ex$(n, F )$ for the family of $n$-vertex graphs that
-are $F-free$ and have ex$(n, F)$ edges. Graphs in the family Ex$(n, F)$ are called $extremal\
-    graphs$. Determining ex$(n, F)$ for different graphs $F$ is one of the most well-studied
-problems in extremal graph theory. A case of particular interest is when $F = C_4$,
-the cycle on four vertices.
+The $C_4$-free graphs constructed in \cite{b} and \cite{ers} are examples of polarity graphs.  To define these graphs, we introduce some ideas from finite geometry.  Let $\mathcal{P}$ and $\mathcal{L}$ be disjoint, finite sets, and let $\mathcal{I}\subset \mathcal{P}\times \mathcal{L}$. We call the triple $(\mathcal{P}, \mathcal{L}, \mathcal{I})$ a {\em finite geometry}.  The elements of $\mathcal{P}$ are called {\em points}, and the elements of $\mathcal{L}$ are called {\em lines}.   A {\em polarity} of the geometry is a bijection from $\mathcal{P}\cup \mathcal{L}$ to $\mathcal{P}\cup \mathcal{L}$ that sends points to lines, sends lines to points, is an involution, and respects the incidence structure.  Given a finite geometry $(\mathcal{P}, \mathcal{L}, \mathcal{I})$ and a polarity $\pi$, the {\em polarity graph} $G_\pi$ is the graph with vertex set $V(G_\pi) = \mathcal{P}$ and edge set
+$$E(G_\pi) = \{\{p,q\}: p,q\in \mathcal{P}, (p, \pi(q))\in \mathcal{I}\}$$
 
+Note that $G_\pi$ will have loops if there is a point $p$ such that $(p, \pi(p))\in \mathcal{I}$.
+Such a point is called an {\em absolute point}. We will work with polarity graphs that have loops, and graphs obtained from polarity graphs by removing the loops.  A case of particular interest is when the geometry is
+the Desarguesian projective plane $PG(2,q)$.   For a prime power $q$, this is the plane obtained by considering the one-dimensional subspaces of $\mathbb{F}_q^3$ as points, the two-dimensional subspaces as lines, and incidence is defined by inclusion. A polarity of $PG(2,q)$ is given by sending points and lines to their orthogonal complements. The polarity graph obtained from $PG(2,q)$ with this polarity is often called the {\em Erd\H{o}s-R\'{e}nyi orthogonal polarity graph} and is denoted $ER_q$.  This is the graph that was constructed in \cite{b, ers} and we recommend \cite{bs} for a detailed study of this graph.
 
+Our main theorem will apply to $ER_q$ as well as to other polarity graphs that come from projective planes that contain an oval.
+An \emph{oval} in a projective plane of order $q$ is a set of $q+1$ points, no three of which are collinear.  It is known that $PG(2,q)$ always contains ovals.  One example is the set of $q+1$ points
+$$\{(1 , t , t^2 ) : t \in \mathbb{F}_q \} \cup \{ (0,1,0) \}$$
+which form an oval in $PG(2,q)$.  There are also non-Desaurgesian planes that contain ovals.  We now state our main theorem.
 
+\begin{theorem}\label{dense subgraph}
+    Let $\Pi$ be a projective plane of order $q$ that contains an oval and has a polarity $\pi$.  If $m \in \{1,2, \dots , q + 1 \}$, then the polarity graph $G_{ \pi}$ contains a subgraph on at most $m + \binom{m}{2}$ vertices that has at least
+    $$2 \binom{m}{2} + \frac{m^4}{8q} - O \left( \frac{m^4}{q^{3/2} } + m \right)$$
+    edges.
+\end{theorem}
 
+Theorem \ref{dense subgraph} allows us to obtain the best-known lower bounds for $\mathrm{ex}(n, C_4)$ for certain values of $n$ by taking the graph $ER_q$ and removing a small subgraph that has many edges.  All of the best lower bounds in the current literature are obtained using this technique (see \cite{abl, fknw, tt}).  An open conjecture of McCuaig is that
+any graph in $\textup{Ex}(n , C_4)$ is an induced subgraph of some orthogonal polarity graph (cf \cite{fu1994}).  For $q \geq 15$ a prime power, F\"{u}redi \cite{fu1996} proved that any graph in $\textup{Ex}( q^2 + q + 1 , C_4)$ is an orthogonal polarity graph of some projective plane of order $q$.  For some recent progress on this problem, see \cite{fknw}.
+By considering certain induced subgraphs of $ER_q$, Abreu, Balbuena, and Labbate \cite{abl} proved that
+
+$$\mathrm{ex}(q^2-q-2, C_4) \geq \frac{1}{2}q^3 - q^2$$
+
+whenever $q$ is a power of 2.  They conjectured that this lower bound is best possible.
+Using Theorem \ref{dense subgraph}, we answer their conjecture in the negative.
+
+\begin{corollary}\label{abl conjecture}
+    If $q$ is a prime power, then
+    $$\mathrm{ex}(q^2 - q - 2, C_4) \geq \frac{1}{2}q^3 - q^2 + \frac{3}{2}q - O\left(q^{1/2}\right).$$
+\end{corollary}
+
+Corollary \ref{abl conjecture} also improves the main result of \cite{tt}.
+In Section \ref{preliminaries} we give some necessary background on projective planes and polarity graphs. We prove
+Theorem \ref{dense subgraph} and Corollary \ref{abl conjecture} in Section \ref{proofs}.  We finish with some concluding remarks in Section \ref{conclusion}.
+
+\section{Preliminaries}\label{preliminaries}
+\section{Proof of Theorem \ref{dense subgraph} and Corollary \ref{abl conjecture}}\label{proofs}
+\section{Concluding remarks}\label{conclusion}
 \begin{thebibliography}{10}
 
     \bibitem{abl}
     M.\ Abreu, C.\ Balbuena, D.\ Labbate,
     {\em Adjacency matrices of polarity graphs and other $C_4$-free graphs of large size},
     Des.\ Codes Cryptogr.\ (2010), 55, 221-233.
-
-    %\bibitem{as}
-    %N.\ Alon, J.\ Spencer,
-    %{\em The Probabilistic Method}, 3rd edition, Wiley-Intersciences Series in Discrete Mathematics and Optimization, John Wiley \& Sons Inc., Hoboken, NJ, 2008.
 
     \bibitem{bs}
     M.\ Bachrat\'{y}, J.\ \v{S}ir\'{a}\v{n},
@@ -155,11 +198,6 @@ the cycle on four vertices.
     F.\ Firke, P.\ Kosek, E.\ Nash, J.\ Williford,
     {\em Extremal graphs without 4-cycles}, Journal of Combinatorial Theory, Series B {\bf 103}, 327-336 (2013).
 
-    %\bibitem{fu1983}
-    %Z.\ F\"{u}redi,
-    %{\em Graphs without quadrilaterals},
-    %Journal of Combinatorial Theory, Series B {\bf 34}, 187-190 (1983).
-
     \bibitem{fu1994}
     Z.\ F\"{u}redi,
     {\em Quadrilateral-free graphs with maximum number of edges},
@@ -176,11 +214,6 @@ the cycle on four vertices.
     {\em The history of degenerate (bipartite) extremal graph problems},
     arXiv:1306.5167
 
-    %\bibitem{gn}
-    %C.\ Godsil, M.\ Newman,
-    %{\em Eigenvalue bounds for independent sets},
-    %J.\ Comb.\ Theory, Series B {\bf 98}, (2008), 721-734.
-
     \bibitem{hirschfeld}
     J.\ W.\ P.\ Hirschfeld,
     {\em Projective Geometries over Finite Fields}, second edition,
@@ -190,17 +223,6 @@ the cycle on four vertices.
     T.\ K\H{o}v\'{a}ri, V.\ T.\ S\'{o}s, P.\ Tur\'{a}n,
     {\em On a problem of Zarankiewicz},
     Colloq. Math. {\bf 3} (1954), p. 50-57.
-
-    %
-    %\bibitem{mw}
-    %D.\ Mubayi, J.\ Williford,
-    %{\em On the independence number of the Erd\H{o}s-R\'{e}nyi and Projective Norm Graphs and a related hypergraph},
-    %J.\ Graph Theory 56 (2007), no.\ 2, 113-127.
-    %
-    %\bibitem{reiman}
-    %I.\ Reiman,
-    %{\em \"{U}ber ein Problem von K.\ Zarankiewicz},
-    %(German) Acta.\ Math.\ Acad.\ Sci.\ Hungar.\ {\bf 9} (1958), 269-273.
 
     \bibitem{tt}
     M.\ Tait, C.\ Timmons,
