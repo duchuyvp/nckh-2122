@@ -124,7 +124,7 @@ $\textup{ex}( q^2 + q + 1 , C_4) \geq \frac{1}{2} q (q + 1)^2$ whenever $q$ is a
 $\textup{ex}(n , C_4) = \frac{1}{2} n^{3/2} + o( n^{3/2} )$.  For more on Tur\'{a}n numbers of bipartite graphs, we recommend the survey of F\"{u}redi and Simonovits \cite{fs}.
 
 The $C_4$-free graphs constructed in \cite{b} and \cite{ers} are examples of polarity graphs.  To define these graphs, we introduce some ideas from finite geometry.  Let $\mathcal{P}$ and $\mathcal{L}$ be disjoint, finite sets, and let $\mathcal{I}\subset \mathcal{P}\times \mathcal{L}$. We call the triple $(\mathcal{P}, \mathcal{L}, \mathcal{I})$ a {\em finite geometry}.  The elements of $\mathcal{P}$ are called {\em points}, and the elements of $\mathcal{L}$ are called {\em lines}.   A {\em polarity} of the geometry is a bijection from $\mathcal{P}\cup \mathcal{L}$ to $\mathcal{P}\cup \mathcal{L}$ that sends points to lines, sends lines to points, is an involution, and respects the incidence structure.  Given a finite geometry $(\mathcal{P}, \mathcal{L}, \mathcal{I})$ and a polarity $\pi$, the {\em polarity graph} $G_\pi$ is the graph with vertex set $V(G_\pi) = \mathcal{P}$ and edge set
-$$E(G_\pi) = \{\{p,q\}: p,q\in \mathcal{P}, (p, \pi(q))\in \mathcal{I}\}$$
+$$ E(G_\pi) = \{\{p,q\}: p,q\in \mathcal{P}, (p, \pi(q))\in \mathcal{I}\} $$
 
 Note that $G_\pi$ will have loops if there is a point $p$ such that $(p, \pi(p))\in \mathcal{I}$.
 Such a point is called an {\em absolute point}. We will work with polarity graphs that have loops, and graphs obtained from polarity graphs by removing the loops.  A case of particular interest is when the geometry is
@@ -132,12 +132,12 @@ the Desarguesian projective plane $PG(2,q)$.   For a prime power $q$, this is th
 
 Our main theorem will apply to $ER_q$ as well as to other polarity graphs that come from projective planes that contain an oval.
 An \emph{oval} in a projective plane of order $q$ is a set of $q+1$ points, no three of which are collinear.  It is known that $PG(2,q)$ always contains ovals.  One example is the set of $q+1$ points
-$$\{(1 , t , t^2 ) : t \in \mathbb{F}_q \} \cup \{ (0,1,0) \}$$
+$$ \{(1 , t , t^2 ) : t \in \mathbb{F}_q \} \cup \{ (0,1,0) \} $$
 which form an oval in $PG(2,q)$.  There are also non-Desaurgesian planes that contain ovals.  We now state our main theorem.
 
 \begin{theorem}\label{dense subgraph}
     Let $\Pi$ be a projective plane of order $q$ that contains an oval and has a polarity $\pi$.  If $m \in \{1,2, \dots , q + 1 \}$, then the polarity graph $G_{ \pi}$ contains a subgraph on at most $m + \binom{m}{2}$ vertices that has at least
-    $$2 \binom{m}{2} + \frac{m^4}{8q} - O \left( \frac{m^4}{q^{3/2} } + m \right)$$
+    $$ 2 \binom{m}{2} + \frac{m^4}{8q} - O \left( \frac{m^4}{q^{3/2} } + m \right) $$
     edges.
 \end{theorem}
 
@@ -145,14 +145,14 @@ Theorem \ref{dense subgraph} allows us to obtain the best-known lower bounds for
 any graph in $\textup{Ex}(n , C_4)$ is an induced subgraph of some orthogonal polarity graph (cf \cite{fu1994}).  For $q \geq 15$ a prime power, F\"{u}redi \cite{fu1996} proved that any graph in $\textup{Ex}( q^2 + q + 1 , C_4)$ is an orthogonal polarity graph of some projective plane of order $q$.  For some recent progress on this problem, see \cite{fknw}.
 By considering certain induced subgraphs of $ER_q$, Abreu, Balbuena, and Labbate \cite{abl} proved that
 
-$$\mathrm{ex}(q^2-q-2, C_4) \geq \frac{1}{2}q^3 - q^2$$
+$$ \mathrm{ex}(q^2-q-2, C_4) \geq \frac{1}{2}q^3 - q^2 $$
 
 whenever $q$ is a power of 2.  They conjectured that this lower bound is best possible.
 Using Theorem \ref{dense subgraph}, we answer their conjecture in the negative.
 
 \begin{corollary}\label{abl conjecture}
     If $q$ is a prime power, then
-    $$\mathrm{ex}(q^2 - q - 2, C_4) \geq \frac{1}{2}q^3 - q^2 + \frac{3}{2}q - O\left(q^{1/2}\right).$$
+    $$ \mathrm{ex}(q^2 - q - 2, C_4) \geq \frac{1}{2}q^3 - q^2 + \frac{3}{2}q - O\left(q^{1/2}\right) $$
 \end{corollary}
 
 Corollary \ref{abl conjecture} also improves the main result of \cite{tt}.
@@ -160,6 +160,51 @@ In Section \ref{preliminaries} we give some necessary background on projective p
 Theorem \ref{dense subgraph} and Corollary \ref{abl conjecture} in Section \ref{proofs}.  We finish with some concluding remarks in Section \ref{conclusion}.
 
 \section{Preliminaries}\label{preliminaries}
+
+Let $\Pi = ( \mathcal{P} , \mathcal{L} , \mathcal{I} )$ be a finite projective plane of order $q$.  A {\em $k$-arc} is a set of $k$ points
+in $\Pi$ such that no three of the points are collinear.  It is known that $k \leq q +1$ when $q$ is odd, and $k \leq q + 2$ when $q$ is even.  A line $l \in \mathcal{L}$ is called {\em exterior}, {\em tangent}, or {\em secant} if it intersects the $k$-arc in 0, 1, or 2 points, respectively.  A $k$-arc has exactly $\binom{q}{2} + \binom{q + 2 - k }{2}$ exterior lines, $k ( q+ 2 - k )$ tangents, and $\binom{k}{2}$ secants (see \cite{demb}, page 147).  A $(q+1)$-arc is called an {\em oval} and in the plane $PG(2,q)$, ovals always exist (see \cite{demb}, Ch 1).  The next lemma is known.  A short proof is included for completeness.
+
+\begin{lemma}\label{eigenvalues of polarity graph}
+    Let $G$ be a polarity graph obtained from a projective plane of order $q$.  If $A$ is the adjacency matrix of $G$, then the eigenvalues of $A$ are $q+1$ and $\pm \sqrt{q}$.
+\end{lemma}
+
+
+\begin{proof}
+    In a projective plane, every pair of points is contained in a unique line. Therefore, in a polarity graph, there is a unique path of length $2$ between any pair of vertices (this path may include a loop). This means that $(A^2)_{ij} = 1$ whenever $i\not=j$. Since any point is on exactly $q+1$ lines, every vertex of $G$ has degree exactly $q+1$ where loops add 1 to the degree of a vertex. The diagonal entries of $A^2$ are all $q+1$ thus,
+    $$ A^2 = J + qI $$
+    The eigenvalues of $J+qI$ are $(q+1)^2$ with multiplicity 1, and $q$ with multiplicity $q^2 + q$.
+\end{proof}
+
+We remark here that the multiplicity of $q+1$ is $1$ and the multiplicities of $\pm \sqrt{q}$ are such that the sum of the eigenvalues is the trace of $A$, which is the number of absolute points of $G$. This implies that given two polarity graphs from projective planes of order $q$, if they have the same number of absolute points, then they are cospectral. Since not all polarity graphs with the same number of absolute points are isomorphic, this gives examples of graphs that are not determined by their spectrum, which may be of independent interest. For more information about determining graphs by their spectrum, see \cite{haemers}.
+
+The next result is a consequence of Lemma \ref{eigenvalues of polarity graph} and the so-called Expander Mixing Lemma.
+We provide a proof which uses some basic ideas from linear algebra.
+
+\begin{lemma}\label{expander mixing lemma for ERq}
+    Let $G$ be a polarity graph of a projective plane of order $q$, and let $S$ be a subset of $V(G)$.
+    Let $e(S)$ denote the number of edges in $S$, possibly including loops.Then
+    $$ e(S)\geq \frac{(q+1)|S|^2}{2(q^2+q+1)} - \frac{\sqrt{q}|S|}{2} $$
+\end{lemma}
+
+\begin{proof}
+    Let $A$ be the adjacency matrix of $G$ and let $n=q^2+q+1$. Let $\{x_i\}$ be an orthonormal set of eigenvectors of $A$. Since $A$ has constant row sum, $x_1 = \frac{1}{\sqrt{n}} \mathbf{1}$ and $\lambda_1 = q+1$. By Lemma \ref{eigenvalues of polarity graph}, the other eigenvalues of $A$ are all $\pm \sqrt{q}$.
+    \medskip
+
+    Now let $S$ be a subset of $V(G)$ and let $\mathbf{1}_S$ be the characteristic vector for $S$. Let $\hat{e}(S)$ denote the number of non-loop edges of $S$ and $l(S)$ denote the number of loops in $S$. Then
+    \begin{equation}\label{sum over S}
+        \mathbf{1}_S^T A \mathbf{1}_S = \sum_{i,j\in S} A_{ij} = 2\hat{e}(S) + l(S).
+    \end{equation}
+    Next we give a spectral decomposition of $\mathbf{1}_S$:
+    $$\mathbf{1}_S = \sum_{i=1}^n \langle \mathbf{1}_S,x_i\rangle x_i $$
+    Noting that $\langle \mathbf{1}_S, x_1\rangle = \frac{|S|}{\sqrt{n}}$ and expanding \eqref{sum over S}, we see that
+    $$ 2\hat{e}(S) + l(S) = \sum_{i=1}^n \langle \mathbf{1}_S, x_i\rangle^2 \lambda_i = \frac{(q+1)|S|^2}{n} + \sum_{i=2}^n \langle \mathbf{1}_S, x_i\rangle^2 \lambda_i $$
+    Therefore,
+    $$ \left|2 \hat{e}(S) + l(S) - \frac{(q+1)|S|^2}{n} \right| \leq \sum_{i=2}^n \left|\langle \mathbf{1}_S, x_i\rangle^2 \lambda_i \right| \leq \sqrt{q} \sum_{i=2}^n \langle \mathbf{1}_S, x_i\rangle^2 \leq \sqrt{q} |S| $$
+    Since $e(S) = \hat{e}(S) + l(S)$ and $l(S)\geq 0$, rearranging gives the result.
+\end{proof}
+
+Note that Lemma \ref{expander mixing lemma for ERq} does not give us any information when $|S| = O( q)$.  Lemma \ref{expander mixing lemma for ERq} is not strong enough for our purposes in terms of proving Corollary \ref{abl conjecture}.
+
 \section{Proof of Theorem \ref{dense subgraph} and Corollary \ref{abl conjecture}}\label{proofs}
 \section{Concluding remarks}\label{conclusion}
 \begin{thebibliography}{10}
