@@ -1,15 +1,15 @@
 \documentclass[12pt]{article}
 % \usepackage{vntex}
+% \usepackage[english, vietnamese]{babel}
+% \usepackage[left=2.00cm, right=2.00cm, top=2.00cm, bottom=2.00cm]{geometry}
+
+
+\usepackage{tikz}
 \usepackage[utf8]{inputenc}
 \usepackage[T5]{fontenc}
-% \usepackage[english, vietnamese]{babel}
-\usepackage{tikz}
-\setlength{\topmargin}{-.5in}
-\setlength{\textheight}{9in}
-\setlength{\oddsidemargin}{.125in}
-\setlength{\textwidth}{6.25in}
-% \usepackage[left=2.00cm, right=2.00cm, top=2.00cm, bottom=2.00cm]{geometry}
+
 \usepackage[unicode]{hyperref}
+\usepackage{enumerate}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{graphicx}
@@ -35,10 +35,6 @@
 \usepackage{float}
 \usepackage{titlesec}
 
-% Without date begin
-\usepackage{titling}
-\date{}
-% Without date end
 \usetikzlibrary{decorations}
 \usetikzlibrary{decorations.pathreplacing}
 \usetikzlibrary{decorations.pathreplacing,calligraphy}
@@ -47,7 +43,12 @@
 \usetikzlibrary{intersections}
 \usetikzlibrary{calc}
 
-\setstretch{1.25}
+% \setstretch{1.25}
+
+\setlength{\topmargin}{-.5in}
+\setlength{\textheight}{9in}
+\setlength{\oddsidemargin}{.125in}
+\setlength{\textwidth}{6.25in}
 
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{acknowledgement}[theorem]{Acknowledgement}
@@ -75,9 +76,9 @@
 \newtheorem{summary}[theorem]{Summary}
 \newtheorem*{recap}{Recap}
 
-\newmdenv[linecolor=black,skipabove=\topsep,skipbelow=\topsep,
-leftmargin=-5pt,rightmargin=-5pt,
-innerleftmargin=5pt,innerrightmargin=5pt]{textbox}
+% \newmdenv[linecolor=black,skipabove=\topsep,skipbelow=\topsep,
+% leftmargin=-5pt,rightmargin=-5pt,
+% innerleftmargin=5pt,innerrightmargin=5pt]{textbox}
 
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
@@ -101,6 +102,7 @@ innerleftmargin=5pt,innerrightmargin=5pt]{textbox}
 }
 
 
+\begin{document}
 
 \title{Small dense subgraphs of polarity graphs and the extremal number for the 4-cycle}
 \author{
@@ -108,8 +110,9 @@ innerleftmargin=5pt,innerrightmargin=5pt]{textbox}
     \and
     Craig Timmons\thanks{Department of Mathematics and Statistics, California State University Sacramento, \mbox{\url{craig.timmons@csus.edu}}}
 }
+\date{}
 
-\begin{document}
+
 \maketitle
 \vspace{-5mm}
 
@@ -295,6 +298,30 @@ we have
 
 
 \section{Concluding remarks}\label{conclusion}
+
+
+There are two special circumstances in which one can improve Theorem \ref{dense subgraph}. Each indicates the difficulty of finding exact values for the parameter $\mathrm{ex}(n, C_4)$.
+
+\begin{itemize}
+    \item The first situation is when $q$ is a square.  In this case, $\mathbb{F}_{q}$ contains the subfield $\mathbb{F}_{\sqrt{q}}$ and this subfield may be used to find small graphs that contain many edges.  For instance $ER_{q}$ contains a subgraph $F$ that is isomorphic to $ER_{ \sqrt{q} }$.
+          One can choose $m = \sqrt{q} + 1$ and let $S$ be the set of absolute points in $F$.  These $m$ vertices will also be absolute points in $ER_q$ and thus are contained in an oval (the absolute points of an orthogonal polarity of $PG(2,q)$ form an oval when $q$ is odd).  If we then consider the $\binom{m}{2}$ vertices in $Y_S$, these will be the vertices in $F$ that are adjacent to the absolute points of $F$.  The set $Y_S$ induces a $\frac{1}{2}(\sqrt{q} -1)$-regular graph in $F$ (see \cite{bs}).
+          The set $X = S \cup Y_S$ will span roughly $\frac{q^{3/2}}{8}$ edges which is much larger than the linear in $q$ lower bound provided by Theorem \ref{dense subgraph} when $m  = \sqrt{q} + 1$.
+
+    \item The second situation is when $q$ is a power of 2 and $q  - 1$ is prime.
+          Assume that this is the case and consider $ER_{q-1}$.  Let $F$ be a subgraph of
+          $ER_{q-1}$ obtained by deleting three vertices of degree $q-1$.  The number of vertices of $F$ is
+          $(q - 1)^2 + (q - 1) + 1 - 3 = q^2 - q - 2$, and the number of edges of $F$ is at least
+          $\frac{1}{2} (q - 1) q^2 - 3(q  - 1)  = \frac{1}{2}q^3 - \frac{1}{2}q^2 - 3q + 3$.  This is larger than $\frac{1}{2}q^3 - q^2$ whenever $q \geq 5$.  A prime of the form $2^m-1$ with $m \in \mathbb{N}$ is known as a Mersenne Prime.  It is an open problem to determine if there are infinitely many Mersenne Primes.  It has been conjectured that there are infinitely many such primes.
+\end{itemize}
+
+
+In \cite{tt}, Sidon sets are used to construct $C_4$-free graphs.  For a prime power $q$, these graphs have $q^2-1$ vertices, and $\frac{1}{2}q^3 - q + \frac{1}{2}$ edges when $q$ is odd, and $\frac{1}{2}q^3 - q$ edges when $q$ is even.  These graphs have a degree sequence similar to the degree sequence of an orthgonal polarity graph and it seemed possible that these graphs could be extremal.  However, Theorem \ref{dense subgraph} can be applied to show
+
+$$ \mathrm{ex}(q^2-1, C_4) \geq \frac{1}{2}q^3 - O(\sqrt{q}) $$
+
+\noindent which shows that the graphs constructed in \cite{tt} are not extremal.
+
+
 \begin{thebibliography}{10}
 
     \bibitem{abl}
