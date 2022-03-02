@@ -11,7 +11,7 @@
 *.cb
 *.cb2
 .*.lb
-
+[1-9]*.*
 ## Intermediate documents:
 *.dvi
 *.xdv
