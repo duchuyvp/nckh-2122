@@ -1,0 +1,171 @@
+\documentclass[12pt]{article}
+
+
+% \usepackage{vntex}
+\usepackage[english, vietnamese]{babel}
+% \usepackage[left=2.00cm, right=2.00cm, top=2.00cm, bottom=2.00cm]{geometry}
+
+\usepackage{enumerate}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{color}
+
+\usepackage{tikz}
+\usepackage[utf8]{inputenc}
+% \usepackage[T5]{fontenc}
+
+
+\usepackage{amsthm}
+\usepackage[unicode]{hyperref}
+
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{a4wide}
+\usepackage{epsfig}
+\usepackage{latexsym}
+\usepackage{array}
+\usepackage{hhline}
+\usepackage{fancyhdr}
+\usepackage[normalem]{ulem}
+\usepackage[makeroom]{cancel}
+\usepackage{longtable}
+\usepackage{amscd}
+\usepackage{diagbox}
+\usepackage{booktabs}
+\usepackage{alltt}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{subcaption}
+\usepackage{caption}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{lipsum}
+\usepackage{setspace}
+% \usepackage{titling}
+\usepackage{multicol}
+% \usepackage{indentfirst}
+\usepackage{float}
+\usepackage{titlesec}
+
+\usetikzlibrary{decorations}
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{decorations.pathreplacing,calligraphy}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{quotes}
+\usetikzlibrary{intersections}
+\usetikzlibrary{calc}
+
+% \setstretch{1.25}
+
+\setlength{\topmargin}{-0.6in}
+\setlength{\textheight}{9in}
+\setlength{\oddsidemargin}{0.125in}
+\setlength{\textwidth}{6.25in}
+
+% \setcounter{MaxMatrixCols}{30}
+
+% \newtheorem{acknowledgement}[theorem]{Acknowledgement}
+% \newtheorem{algorithm}[theorem]{Algorithm}
+% \newtheorem{axiom}[theorem]{Axiom}
+% \newtheorem{case}[theorem]{Case}
+% \newtheorem{claim}[theorem]{Claim}
+% \newtheorem{conclusion}[theorem]{Conclusion}
+% \newtheorem{condition}[theorem]{Condition}
+% \newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}{Hệ quả}
+% \newtheorem{criterion}[theorem]{Criterion}
+% \newtheorem{definition}[theorem]{Definition}
+% \newtheorem{example}[theorem]{Example}
+% \newtheorem{exercise}[theorem]{Exercise}
+% \newtheorem{lemma}[theorem]{Lemma}
+% \newtheorem{notation}[theorem]{Notation}
+% \newtheorem{problem}[theorem]{Problem}
+% \newtheorem{proposition}[theorem]{Proposition}
+% \newtheorem{remark}[theorem]{Remark}
+% \newtheorem{solution}[theorem]{Solution}
+% \newtheorem{summary}[theorem]{Summary}
+\newtheorem{theorem}{Định lý}
+% \newtheorem*{recap}{Recap}
+% \newenvironment{proof}[1][Proof]{\noindent\textbf{#1.} }
+% {\hfill \ \rule{0.5em}{0.5em}}
+% \newmdenv[linecolor=black,skipabove=\topsep,skipbelow=\topsep,
+% leftmargin=-5pt,rightmargin=-5pt,
+% innerleftmargin=5pt,innerrightmargin=5pt]{textbox}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{
+%   frame=tb,
+    language=Java,
+    aboveskip=3mm,
+    belowskip=3mm,
+    showstringspaces=false,
+    columns=flexible,
+    basicstyle={\small\ttfamily},
+    numbers=none,
+    numberstyle=\tiny\color{gray},
+    keywordstyle=\color{blue},
+    commentstyle=\color{dkgreen},
+    stringstyle=\color{mauve},
+    breaklines=true,
+    breakatwhitespace=true,
+    tabsize=3
+}
+
+\title{Đồ thị con dày đặc của đồ thị phân cực và số chu trình 4 đỉnh cực đại}
+\author{
+    Michael Tait\thanks{Department of Mathematics, University of California San Diego, \url{mtait@math.ucsd.edu}}
+    \and
+    Craig Timmons\thanks{Department of Mathematics and Statistics, California State University Sacramento, \mbox{\url{craig.timmons@csus.edu}}}
+}
+\date{}
+
+\begin{document}
+
+\maketitle
+\vspace{-5mm}
+
+\begin{abstract}
+    Trong nội dung bài báo, chúng tôi sẽ chứng minh rằng với mọi \mbox{$m \in \{1,2, \dots , q +1 \}$}, nếu $G$ là một đồ thị phân cực của một mặt phẳng ánh xạ bậc $q$ chứa một hình oval, thì $G$ chứa một đồ thị con với $m + \binom{m}{2}$ đỉnh và $m^2+\frac{m^4}{8q} - O ( \frac{m^4}{q^{3/2} } +m )$ cạnh. As an application, ta sẽ đưa ra một cận dưới tốt nhất cho số Tur\'{a}n  $\mathrm{ex}(n, C_4)$ với một giá trị chính xác của $n$. Cụ thể hơn, chúng tôi bác bỏ phỏng đoán của Abreu, Balbuena, và Labbate về $\mathrm{ex}(q^2-q-2, C_4)$ với $q$ là lũy thừa của $2$.
+\end{abstract}
+
+
+Michael Tait và  Craig Timmons đưa ra các khái niệm về $F$-\emph{free}, số Tur\'{a}n, đồ thị phân cực, hình học hữu hạn, điểm phân cực và hình oval:
+
+Cho $F$ là một đồ thị:
+\begin{itemize}
+    \item  Đồ thị $G$ được gọi là $F$-\emph{free}  nếu $F$ không phải là đồ thị con của $G$.
+    \item $\textup{ex}(n , F)$ được định nghĩa là số Tur\'{a}n của $F$, là số cạnh tối đa của 1 đỉnh trong một đồ thị $F$-\emph{free} $n$ đỉnh
+    \item $\textup{Ex}(n  , F)$ là họ đồ thị $n$ đỉnh là $F$-\emph{free} và có các cạnh ex(n, F). Các đồ thị trong họ $\textup{Ex}(n  , F)$ được gọi là \emph{đồ thị phân cực}.
+    \item Cho $\mathcal{P}$ và $\mathcal{L}$ là các tập rời rạc, hữu hạn, và cho $\mathcal{I}\subset \mathcal{P}\times \mathcal{L}$. Bộ ba $(\mathcal{P}, \mathcal{L}, \mathcal{I})$ là một hình học hữu hạn. Các phần tử của $\mathcal{P}$ được gọi là điểm, các phần tử của $\mathcal{L}$ được gọi là đoạn thẳng. Một cực của hình học là một phép chiếu từ $\mathcal{P}\cup \mathcal{L}$ đến $\mathcal{P}\cup \mathcal{L}$ để gửi điểm tới đường, gửi đường tới điểm.
+    \item Cho một hình học hữu hạn $(\mathcal{P}, \mathcal{L}, \mathcal{I})$ và một cực $\pi$, đồ thị phân cực $G_\pi$ là đồ thị có tập đỉnh $V(G_\pi) = \mathcal{P}$ và tập cạnh
+    $$ E(G_\pi) = \{\{p,q\}: p,q\in \mathcal{P}, (p, \pi(q))\in \mathcal{I}\} $$
+    \item Điểm phân cực là điểm mà $(p, \pi(p))\in \mathcal{I}$.
+    \item Hình oval trong mặt ánh xạ bậc $q$ là tập hợp của $q+1$ điểm trong đó không có 3 điểm nào thẳng hàng.
+
+
+\end{itemize}
+
+Hiện nay việc xác định số cạnh tối đa của các đồ thị $F$-\emph{free}  khác nhau là một trong những vấn đề được nghiên cứu nhiều nhất trong lý thuyết đồ thị phân cực. Đặc biệt là $F = C_4$ - chu trình bốn đỉnh.
+
+Michael Tait và  Craig Timmons đã phát biểu định lý
+
+Định lý 1.1:
+
+\begin{theorem}\label{crass subgraph}
+     Gọi $\Pi$ là một mặt phẳng ánh xạ bậc $q$, chứa hình oval và có một phân cực $\pi$. Nếu $m \in \{1,2, \dots , q + 1 \}$, thì đồ thị phân cực $G_{ \pi}$ chứa một đồ thị con có nhiều nhất $m + \binom{m}{2}$ đỉnh và có ít nhất $$ 2 \binom{m}{2} + \frac{m^4}{8q} - O \left( \frac{m^4}{q^{3/2} } + m \right) $$ cạnh.
+\end{theorem}
+Bằng cách xem xét các đồ thị con của $ER_q$, Abreu, Balbuena và Labbate đã chứng minh rằng
+$$ \mathrm{ex}(q^2-q-2, C_4) \geq \frac{1}{2}q^3 - q^2 $$
+trong đó $q$ là lũy thừa của 2.
+
+Tuy nhiên, bằng cách sử dụng định lý \ref{crass subgraph}, Michael Tait và  Craig Timmons đã bác bỏ phỏng đoán trên và đưa ra một kết quả mới
+
+\begin{corollary}\label{speculate}
+    Nếu $q$ là lũy thừa của số nguyên tố, thì
+    $$ \mathrm{ex}(q^2 - q - 2, C_4) \geq \frac{1}{2}q^3 - q^2 + \frac{3}{2}q - O\left(q^{1/2}\right) $$
+\end{corollary}
+
+\end{document}
