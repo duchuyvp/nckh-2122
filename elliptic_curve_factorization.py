@@ -4,7 +4,8 @@ import random
 import sys
 
 #y^2=x^3+ax+b mod n
-val=5210644015679228794060694325390955853335898483908056458352183851018372555735221
+val=1000000000000000009
+print(val)
 
 if (len(sys.argv)>1):
 	val=int(sys.argv[1])
@@ -81,7 +82,7 @@ def mulPoint(E,P,m):
 
 def ellipticFactor(N,m,times=5):
 	for i in range(times):
-		E,P=randomCurve(N);
+		E,P=randomCurve(N)
 		Q,d=mulPoint(E,P,m)
 		if d!=1 : return d
 	return N
