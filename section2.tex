@@ -1,0 +1,92 @@
+\section{Đường cong elliptic trên trường hữu hạn}
+
+Trong phần trước, chúng ta đã phát triển lý thuyết về đường cong elip về mặt hình học.
+Tuy nhiên, để áp dụng lý thuyết về đường cong elliptic vào mật mã,
+chúng ta cần xem xét các đường cong elliptic mà các điểm của nó có tọa độ trong một trường hữu hạn $F_p$.
+Các ứng dụng về mật mã của đường cong Elliptic đa số chỉ sử dụng các đường
+cong trên trường hữu hạn.
+
+\subsection{Sơ bộ}
+\begin{definition}
+	Trường là một tập hợp K có nhiều hơn một phần tử, được định nghĩa hai phép toán cộng và nhân,
+	ký hiệu bởi dấu $(+)$ và dấu $(.)$. Trường thỏa mãn các tính chất của số học.
+\end{definition}
+Các tính chất số học:
+TODO:
+\begin{enumerate}
+	\item Tính kết hợp
+	\item Tính giao hoán
+	\item Đơn vị cộng và đơn vị nhân
+	\item Nghịch đảo phép cộng
+	\item Nghịch đảo phép nhân
+	\item Tính phân phối
+\end{enumerate}
+
+\begin{definition}
+	Trường hữu hạn (còn gọi là trường Galois) là những trường có hữu hạn số phần tử.
+	Bậc của một trường hữu hạn là số phần tử của nó, là số nguyên tố hoặc lũy thừa nguyên tố.
+\end{definition}
+Trường hữu hạn là cơ bản trong một số lĩnh vực toán học và khoa học máy tính,
+bao gồm lý thuyết số, hình học đại số, lý thuyết Galois, hình học hữu hạn, mật mã và lý thuyết mã hóa.
+
+\begin{definition}[Bình phương modulo]
+	Cho số nguyên dương $m \geq 2$. Số nguyên $a$ được gọi là \textit{bình phương modulo $m$} nếu $\gcd(a,m) = 1$ và phương trình
+	$$x^2 \equiv a (\mod{m})$$
+	có nghiệm
+\end{definition}
+
+Xét $F_p$ là một trường hữu hạn (hữu hạn số phần tử nguyên dương):
+$$F_p = \{0, 1, 2, \ldots p-1\}$$
+Với $p$ là một số nguyên tố. $F_p$ giống như cách viết $Z/mZ$ là vành các số nguyên modulo $m$.
+\subsection{Đường cong elliptic trên trường hữu hạn}
+
+Ta định nghĩa một đường cong elliptic $E$ trên trường hữu hạn $\mathbb{F}_q$ là một phương trình có dạng:
+$$E: Y^2 = X^3 + AX + B\ \text{với các hằng số}\ A, B \in F_p\ \text{thỏa mãn}\ 4A^3 + 27B^2 \neq 0$$
+
+
+Tập hợp các điểm trên $E$ có toạ độ thuộc $\mathbb{F} _p$ được kí hiệu bởi
+$$E(F_p) = \{(x, y) : x, y \in \mathbb{F}_p\ \text{thỏa mãn}\ y^2 = x^3 + A x + B\} \cup \mathcal{O}$$
+
+\begin{remark}
+	Vì một vài lí do mà chúng tôi sẽ giải thích ở phần sau, ở đây, chúng tôi thêm điều kiện $p \geq 3$.
+	Những đường cong Elliptic trên trường $\mathbb{F}_2$ có vai trò quan trọng trong mật mã, nhưng chúng rất phức tạp, nên chúng ta sẽ thảo luận về chúng ở phần 7.
+\end{remark}
+
+\begin{example}
+	\label{ex:ex4}
+	Xem xét đường cong elliptic
+	$$E: Y^2 = X^3 + 3X + 8 \ \ \ \ \text{trên trường}\  F_{13}\ $$
+\end{example}
+
+Ta tìm các điểm thuộc $E(\mathbb{F}_{13})$ bằng cách thay tất cả giá trị của $X = 0,1,2,\ldots,12$ và kiểm tra với mỗi giá trị của $X$, $X^3 + 3X + 8$ có là bình phương modulo của 13 hay không.
+Ví dụ, thay $X = 0$, ta có $X^3+3X+8 = 8$ và 8 không phải bình phương modulo của 13.
+Tiếp theo, thay $X = 1$, ta được $X^3+3X+8 = 12$ và 12 là bình phương modulo của 13. Nó có 2 nghiệm
+$$5^2 \equiv 12 (\mod{13}) \ \ \ \ \text{và} \ \ \ \ 8^2 \equiv 12 (\mod 13)$$.
+
+Ta tìm được 2 điểm $(1,5)$ và $(1,8)$ thuộc $E(\mathbb{F}_{13})$. Tiếp tục theo cách này, ta kết thúc với tập hoàn chỉnh gồm 9 điểm:
+$$E(\mathbb{F}_{13}) = \{(1,5), (1,8), (2,3), (2,10), (9,6), (9,7), (12,2), (12,11)\}.$$
+
+Cho $P_1 = (x_1, y_1)$ và $P_2 = (x_2, y_2)$ thuộc $E(\mathbb{F}_{p})$. Ta định nghĩa tổng $P_1+P_2$ có tọa độ $(x_3, y_3)$ thu được bằng cách áp dụng thuật toán cộng (\ref{th:th2}).
+Vì tọa độ các độ các điểm đó nằm trong trường $\mathbb{F}_p$, ta thu được $(x_3, y_3)$ có tọa độ trong trường $\mathbb{F}_p$. Nhưng điều này vẫn chưa đủ chỉ ra
+$(x_3, y_3)$ có thể thuộc $E(\mathbb{F}_{p})$ hay không.
+
+\begin{theorem}
+	\label{th:th3}
+	Cho $E$ là đường cong elliptic trên $\mathbb{F}_p$ và $P$ và $Q$ là 2 điểm thuộc $E(\mathbb{F}_{p})$.
+	\begin{itemize}
+		\item Thuật toán cộng đường cong elliptic áp dụng cho $P$ và $Q$ (\ref{th:th2}) đưa ra một điểm trong $E(\mathbb{F}_{p})$.
+		      Điểm này được kí hiệu bởi $P + Q$.
+		\item Luật cộng trên $E(\mathbb{F}_{p})$ thỏa mãn tất cả các tính chất được liệt kê ở định lý \ref{th:th1}.
+		      Nói cách khác, luật cộng này làm cho $E(\mathbb{F}_{p})$ thành nhóm hữu hạn.
+	\end{itemize}
+\end{theorem}
+
+\begin{proof}
+
+\end{proof}
+
+\begin{example}
+	\label{ex:ex5}
+	Tiếp tục với đường cong $E$ từ ví dụ \ref{ex:ex4}
+	$$ E: Y^2 = X^3 + 3X + 8 \ \ \ \ \text{trên trường}\  F_{13} $$
+\end{example}

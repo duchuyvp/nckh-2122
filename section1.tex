@@ -1,0 +1,301 @@
+
+\section{Đường cong Elliptic}
+Một \textit{đường cong Elliptic} là tập nghiệm của một phương trình có dạng
+$$Y^2 = X^3 + AX + B$$
+Các phương trình thuộc loại này được gọi là \textit{phương trình Weierstrass} sau khi ông đã nghiên cứu chúng trong suốt thể kỉ XIX. Hai ví dụ cho đường cong elliptic:
+$$ E_1: Y^2=X^3-3X+3 $$ và $$ E_2: Y^2=X^3-5X+5 $$ được minh họa ở \hyperref[fg:fg1]{Hình 1}
+
+\begin{figure}[H]
+	\caption{Hình 1}
+	\label{fg:fg1}
+	\begin{minipage}{0.4\textwidth}
+		\centering
+		\begin{tikzpicture}[scale = 0.5, line cap=round,line join=round,>=triangle 45,x=1cm,y=1cm]
+			\begin{axis}[
+					x=1cm,y=1cm,
+					axis lines=middle,
+					xmin=-5.912600967627929,
+					xmax=5.112504977805202,
+					ymin=-5.000000419005899,
+					ymax=5.000000419005899,
+					xtick={-5,-4,...,5},
+					ytick={-5,-4,...,5},]
+				\clip(-5.912600967627929,-5.000000419005899) rectangle (10.112504977805202,5.000000419005899);
+				\draw[line width=2pt,color=blue,smooth,samples=100,domain=-2.1038033040947663:10.112504977805202] plot(\x,{sqrt((\x)^(3)-3*(\x)+3)});
+				\draw[line width=2pt,color=blue,smooth,samples=100,domain=-2.1038033040947663:10.112504977805202] plot(\x,{0-sqrt((\x)^(3)-3*(\x)+3)});
+			\end{axis}
+		\end{tikzpicture}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{0.4\textwidth}
+		\centering
+		\begin{tikzpicture}[scale = 0.5, line cap=round,line join=round,>=triangle 45,x=1cm,y=1cm]
+			\begin{axis}[
+					x=1cm,y=1cm,
+					axis lines=middle,
+					xmin=-5.912600967627929,
+					xmax=5.112504977805202,
+					ymin=-5.000000419005899,
+					ymax=5.000000419005899,
+					xtick={-5,-4,...,5},
+					ytick={-5,-4,...,5},]
+				\clip(-5.912600967627929,-5.000000419005899) rectangle (10.112504977805202,5.000000419005899);
+				\draw[line width=2pt,color=blue,smooth,samples=100,domain=-2.791287717641796:0.9999998864501113] plot(\x,{sqrt(abs((\x)^(3)-6*(\x)+5))});
+				\draw[line width=2pt,color=blue,smooth,samples=100,domain=1.791293439719924:10.112505461619168] plot(\x,{sqrt(abs((\x)^(3)-6*(\x)+5))});
+				\draw[line width=2pt,color=blue,smooth,samples=100,domain=-2.791287717641796:0.9999998864501113] plot(\x,{0-sqrt(abs((\x)^(3)-6*(\x)+5))});
+				\draw[line width=2pt,color=blue,smooth,samples=100,domain=1.791293439719924:10.112505461619168] plot(\x,{0-sqrt(abs((\x)^(3)-6*(\x)+5))});
+			\end{axis}
+		\end{tikzpicture}
+	\end{minipage}
+\end{figure}
+
+
+Một điều tuyệt vời của đường cong elliptic là có một cách tự nhiên để chọn hai điểm trên đường cong và
+``cộng'' chúng để tạo ra điểm thứ ba. Phép ``cộng'' được chúng tôi nhắc đến ở đây là một phép toán kết hợp hai điểm theo cách tương tự với phép cộng thông thường
+ở một vài khía cạnh (có tính chất giao hoán, kết hợp và có cách nhận dạng), nhưng rất khác ở những phần còn lại. Một trong những cách đơn giản để miêu tả "luật cộng" là sử dụng hình học.
+
+Cho $P$ và $Q$ là hai điểm trên đường cong elliptic $E$, như minh họa ở \hyperref[fg:fg2]{Hình 2}. Ta bắt đầu vẽ một đường thẳng $L$ đi qua $P$ và $Q$. Đường thẳng
+$L$ sẽ cắt $E$ tại ba điểm $P$, $Q$ và một điểm $R$ thứ ba. Ta lấy đối xứng điểm $R$ qua trục $Ox$ để được điểm $R'$. Điểm $R'$ này gọi là \textit{tổng của $P$ và $Q$},
+phép ``cộng'' này không giống phép cộng thông thường. Ta biểu thị phép ``cộng'' này bằng kí hiệu $\oplus$. Ta viết
+\begin{equation}
+	P \oplus Q = R'
+\end{equation}
+
+\begin{example}
+	\label{ex:ex1}
+	Cho đường cong elliptic E:
+	\begin{equation}
+		\label{eq:curve}
+		Y^2 = X^3 -15X + 18
+	\end{equation}
+\end{example}
+Điểm $P = (7,16)$ và $Q = (1,2)$ nằm trên $E$. Đường thẳng $L$ nối $P$ và $Q$ có phương trình
+\begin{equation}
+	\label{eq:line}
+	L: Y = \frac{7}{3}X - \frac{1}{3}
+\end{equation}
+Để tìm giao điểm của $E$ và $L$, ta thay $Y$ ở phương trình \eqref{eq:line} vào phương trình \eqref{eq:curve} để tìm $X$. Ta có
+\begin{center}
+
+	$
+		\begin{array}{rcl}
+			(\frac{7}{3}X - \frac{1}{3})^2                & = & X^3 -15X+18                                        \\
+			\frac{49}{9}X^2 - \frac{14}{9}X + \frac{1}{9} & = & X^3 -15X+18                                        \\
+			0                                             & = & X^3 -\frac{49}{9}X^2 -\frac{121}{9}X+\frac{161}{9} \\
+		\end{array}
+	$
+\end{center}
+
+\begin{figure}[H]
+	\caption{Hình 2}
+	\label{fg:fg2}
+	\centering
+	\begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=1cm,y=1cm]
+		\clip(-5.736430725533388,-5.733053262983473) rectangle (5.923722428745249,5.872549467181578);
+		\draw[line width=0.8pt,color=blue,smooth,samples=100,domain=-2.103803291543122:5.923722428745249] plot(\x,{sqrt(abs((\x)^(3)-3*(\x)+3))});
+		\draw[line width=0.8pt,color=blue,smooth,samples=100,domain=-2.103803291543122:5.923722428745249] plot(\x,{0-sqrt(abs((\x)^(3)-3*(\x)+3))});
+		\draw [line width=0.8pt,domain=-5.736430725533388:5.923722428745249] plot(\x,{(--2.3486301286669415-0.40680839258599555*\x)/1.3559822370127241});
+		\draw [line width=0.8pt,dotted] (1.4459883083356893,-1.9982396827947813)-- (1.4459883083356893,1.9982396827947813);
+		\begin{scriptsize}
+			\draw[color=black] (-1.9451762496392822,0.28794979855338965) node {$E$};
+			\draw [fill=black] (0,1.7320508075688772) circle (2pt);
+			\draw[color=black] (0.2232031088756924,1.9926505521028977) node {$Q$};
+			\draw [fill=black] (-1.3559822370127241,2.1388592001548727) circle (2pt);
+			\draw[color=black] (-1.1405574939639143,2.4017787329547793) node {$P$};
+			\draw[color=black] (-5.463678604965468,2.8700487609709) node {$L$};
+			\draw [fill=black] (1.4459883083356893,1.2982396827947813) circle (2pt);
+			\draw[color=black] (1.777890196112844,1.5698847652226198) node {$\ R$};
+			\draw [fill=black] (1.4459883083356893,-1.2982396827947813) circle (2pt);
+			\draw[color=black] (2.4324952854758553,-1.0348979862010284) node {$R' = P \oplus Q$};
+		\end{scriptsize}
+	\end{tikzpicture}
+\end{figure}
+Thông thường, việc tìm nghiệm của phương trình bậc ba không đơn giản, nhưng ta đã biết trước 2 giao điểm của $L$ và $E$ là $P$ và $Q$, nên rõ ràng phương trình trên
+có 2 nghiệm $X=1$ và $X=7$. Từ đó, ta dễ dàng tìm được nghiệm còn lại
+$$X^3 -\frac{49}{9}X^2 -\frac{121}{9}X+\frac{161}{9} = (X-7) \centerdot  (X-1) \centerdot (X+\frac{23}{9})$$
+
+Thay $X=-\frac{23}{9}$ vào phương trình \eqref{eq:line} ta được điểm $R = (-\frac{23}{9}, -\frac{170}{27})$. Cuối cùng, lấy đối xứng qua trục $Ox$ ta được
+$$P \oplus Q = (-\frac{23}{9}, \frac{170}{27})$$
+
+Điều gì xảy ra khi ta cộng điểm $P$ với chính nó?
+Khi điểm $Q$ tiến dần đến $P$, đường thẳng $L$ sẽ trở thành tiếp tuyến của $E$ tại $P$. Vậy, để cộng điểm $P$ với chính nó, ta đơn giản chỉ cần lấy $L$ là
+tiếp tuyến của $E$ tại $P$, minh họa ở \hyperref[fg:fg3]{Hình 3}. Khi đó $L$ giao $E$ tại $P$ và một điểm $R$ khác, điểm $P$ được tính 2 lần.
+\begin{figure}[H]
+	\caption{Hình 3}
+	\label{fg:fg3}
+	\centering
+	\begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=1cm,y=1cm]
+		\clip(-5.736430725533388,-5.733053262983473) rectangle (5.923722428745249,5.872549467181578);
+		\draw[line width=0.8pt,color=blue,smooth,samples=100,domain=-2.103803291543122:5.923722428745249] plot(\x,{sqrt(abs((\x)^(3)-3*(\x)+3))});
+		\draw[line width=0.8pt,color=blue,smooth,samples=100,domain=-2.103803291543122:5.923722428745249] plot(\x,{0-sqrt(abs((\x)^(3)-3*(\x)+3))});
+		\draw [line width=0.8pt,domain=-5.736430725533388:5.923722428745249] plot(\x,{(-0.011820467984078764-0.0023798531917433863*\x)/-0.0040177629872759635});
+		\draw [line width=0.8pt,dotted] (3.06684049847989,-5.458642606222206)-- (3.06684049847989,5.458642606222206);
+		\begin{scriptsize}
+			\draw[color=black] (-1.9451762496392822,0.28794979855338965) node {$E$};
+			\draw [fill=black] (-1.36,2.1364793469631294) circle (2pt);
+			\draw [fill=black] (-1.3559822370127241,2.1388592001548727) circle (2pt);
+			\draw[color=black] (-1.1405574939639143,2.4017787329547793) node {$P$};
+			\draw[color=black] (-5.463678604965468,-0.10754077627009614) node {$L$};
+			\draw [fill=black] (3.06684049847989,4.758642606222206) circle (2pt);
+			\draw[color=black] (3.400765313491976,5.020199090406824) node {$\ R$};
+			\draw [fill=black] (3.06684049847989,-4.758642606222206) circle (2pt);
+			\draw[color=black] (4.0553704028549875,-4.4988499174136285) node {$R' = P \oplus P = 2P$};
+		\end{scriptsize}
+	\end{tikzpicture}
+\end{figure}
+\begin{example}
+	\label{ex:ex2}
+	Tiếp tục với đường cong $E$ và điểm $P$ ở \hyperref[ex:ex1]{ví dụ 1}, ta tính $P \oplus P$.
+\end{example}
+Ta tìm độ dốc tại $P$ của $E$ bằng cách đạo hàm 2 vế phương trình \eqref{eq:curve}. Ta được
+$$2\frac{dY}{dX} = 3X^2-15, \ \text{suy ra} \ \frac{dY}{dX} = \frac{3X^2-15}{2Y} $$
+
+Thay tọa độ điểm $P = (7,16)$ ta được độ dốc $\lambda = \frac{33}{8}$, nên đường tiếp tuyến của $E$ tại $P$ có phương trình
+\begin{equation}
+	\label{eq:tang}
+	L: Y = \frac{33}{8}X - \frac{103}{8}
+\end{equation}
+Tiếp theo, thay $Y$ ở phương trình \eqref{eq:tang} vào phương trình \eqref{eq:curve}:
+\begin{center}
+
+	$
+		\begin{array}{rcl}
+			(\frac{33}{8}X - \frac{103}{8})^2                             & = & X^3 -15X+18 \\
+			X^3 - \frac{1089}{64}X^2 + \frac{2919}{32}X - \frac{9457}{64} & = & 0           \\
+			(X-7)^2 \centerdot (X-\frac{193}{64})                         & = & 0           \\
+		\end{array}
+	$
+\end{center}
+Ta đã biết trước $X=7$ là nghiệm bội 2 của phương trình bậc 3 nên dễ dàng phân tích thành nhân tử và tìm được nghiệm còn lại.
+Cuối cùng, thay $X=\frac{193}{64}$ vào phương trình \eqref{eq:tang} ta được $Y = -\frac{233}{512}$. Đổi dấu  $Y$ ta được
+$$P \oplus P = (\frac{193}{64},\frac{233}{512})$$
+
+Vấn đề thứ hai là khi ta cố gắng cộng điểm $P=(a,b)$ với điểm đỗi xứng của nó qua trục $Ox$ $P'=(a,-b)$.
+Đường thẳng $L$ đi qua $P$ và $P'$ có phương trình $x=a$, chỉ cắt $E$ tại 2 điểm $P$ và $P'$. (\hyperref[fg:fg4]{Hình 4})
+Vậy nên không có giao điểm thứ ba. Giải pháp là tạo thêm một điểm $\mathcal{O}$ ở "vô cực".
+Chính xác hơn, điểm $\mathcal{O}$ không tồn tại trên mặt phẳng $ Oxy$, nhưng ta giả định nó nằm trên mọi đường thẳng đứng.
+Ta có:
+$$ P \oplus P' = \mathcal{O}$$
+
+Tiếp theo, ta cần tìm cách  cộng điểm $\mathcal{O}$ với điểm $P = (a,b)$ thuộc $E$.
+Đường thẳng $L$ nối $P$ với $\mathcal{O}$ là đường thẳng đứng đi qua $P$ và cắt $E$ tại $P'=(a,-b)$.
+Để cộng $P$ với $\mathcal{O}$, ta lấy điểm đối xứng với $P'$ qua trục $Ox$, ta được điểm $P$.
+Nói cách khác $P \oplus \mathcal{O} = P$, vậy điểm $\mathcal{O}$ có vai trò như số 0 trong phép cộng elliptic.
+
+\begin{figure}[H]
+	\caption{Hình 4}
+	\label{fg:fg4}
+	\centering
+	\begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=1cm,y=1cm]
+		\clip(-5.083985307432931,-5.419798893648197) rectangle (4.940270977414931,5.225844038096666);
+		\draw[line width=0.8pt,color=blue,smooth,samples=100,domain=-2.103803385261131:4.940270977414931] plot(\x,{sqrt(abs((\x)^(3)-3*(\x)+3))});
+		\draw[line width=0.8pt,color=blue,smooth,samples=100,domain=-2.103803385261131:4.940270977414931] plot(\x,{0-sqrt(abs((\x)^(3)-3*(\x)+3))});
+		\draw [->,line width=0.8pt] (-1.3559822370127241,-5.8388592001548725) -- (-1.3559822370127241,5.138859200154872);
+		\begin{scriptsize}
+			\draw[color=black] (-1.9653277965913738,0.24888872474237672) node {$E$};
+			\draw [fill=black] (-1.3559822370127241,2.1388592001548727) circle (2pt);
+			\draw[color=black] (-0.4929001609366532,2.3709827452774213) node {$P = (a,b)$};
+			\draw [fill=black] (-1.3559822370127241,-2.1388592001548727) circle (2pt);
+			\draw[color=black] (-0.2929001609366532,-2.408378124862309) node {$P'=(a,-b)$};
+			\draw[color=black] (-0.7460030555104643,5.020669201857089) node {$\mathcal{O}$};
+			\draw[color=black] (-1.1680770043461637,1.292349320475078) node {$\ L$};
+		\end{scriptsize}
+	\end{tikzpicture}
+\end{figure}
+\begin{example}
+	\label{ex:ex3}
+	Tiếp tục với đường cong $E$ ở \hyperref[ex:ex1]{ví dụ 1} và điểm $T = (3,0)$.
+\end{example}
+Chú ý điểm $T$ nằm trên $E$ và tiếp tuyến tại $T$ là đường thẳng đứng $X=3$. Vậy nếu cộng điểm $T$ với chính nó, ta được $T \oplus T = \mathcal{O}$.
+
+\begin{definition}
+	Một đường cong elliptic $E$ là tập nghiệm của một phương trình \mbox{Weierstrass}:
+	$$E : Y^2 = X^3 + AX+ B$$
+	cùng với một điểm $\mathcal{O}$ ở vô cùng, trong đó hằng số $A$ và $B$ thỏa mãn
+	$$ 4A^3 + 27B^2 \neq 0$$
+\end{definition}
+
+\textit{Luật cộng} trên $E$ được định nghĩa như sau. Cho 2 điểm $P$ và $Q$ là 2 điểm thuộc $E$.
+$L$ là đường thẳng nối $P$ và $Q$, hoặc là đường tiếp tuyến của $E$ tại $P$ nếu $P=Q$.
+Khi đó, giao điểm của $E$ và $L$ là ba điểm $P$, $Q$ và $R$, với $\mathcal{O}$
+được hiểu là điểm nằm trên mọi đường thẳng đứng. $R=(a,b)$, tổng của $P$ và $Q$
+là điểm $R'=(a,-b)$. Tổng này được ký hiệu là $P \oplus Q$, có thể viết đơn giản $P+Q$.
+
+Ta biểu diễn điểm đối xứng của $P$ bởi $\ominus P = (a,-b)$, hoặc  $-P$;
+ta định nghĩa $P \ominus P$ (hay $P - Q$) là $P \oplus (\ominus Q)$.
+Tương tự, lặp lại phép cộng nhiều lần là biểu diễn của phép nhân một điểm với một số nguyên,
+$$nP = \underbrace{P + P + P + \ldots + P}_{\text{$n$ số hạng}}$$
+
+\begin{remark}
+	Tại sao cần thỏa mãn điều kiện $4A^3 + 27B^2 \neq 0$?
+\end{remark}
+Đại lượng $\Delta_E = 4A^3 + 27B^2$ được gọi là \textit{phân thức của $E$}.
+$\Delta_E \neq 0$ là điều kiện để đa thức $X^3 + AX + B$ có 3 nghiệm phân biệt, nếu phân tích thành nhân tử $X^3 + AX + B$
+ta được:
+$$X^3 + AX + B = (X-e_1)(X-e_2)(X-e_3)$$
+trong đó $e_1, e_2, e_3$ là các số phức, thì
+$$4A^3 + 27B^2 \neq 0 \ \ \ \ \ \text{khi và chỉ khi} \ \ \ \ \ e_1, e_2, e_3 \ \text{phân biệt}$$
+
+Phép cộng không hoàn toàn đúng đối với đường cong có $\Delta_E = 0$ nên chúng tôi thêm điều kiện $\Delta_E \neq 0$ khi nêu
+khái niệm đường cong elliptic.
+
+\begin{theorem}
+	\label{th:th1}
+	Cho đường cong elliptic $E$. Luật cộng trên $E$ thỏa mãn các tính chất sau:
+\end{theorem}
+\begin{tabular}{crclll}
+	(a) \label{th:th1:a} & $P + \mathcal{O}$ & $=$ & $\mathcal{O} + P = P$ & $\forall P \in E$     & [Cộng với điểm $\mathcal{O}$] \\
+	(b) \label{th:th1:b} & $P + (-P)$        & $=$ & $\mathcal{O}$         & $\forall P \in E$     & [Nghịch đảo]                  \\
+	(c) \label{th:th1:c} & $(P + Q) + R$     & $=$ & $P + (Q + R)$         & $\forall P,Q,R \in E$ & [Kết hợp]                     \\
+	(d) \label{th:th1:d} & $P + Q$           & $=$ & $ Q + P$              & $\forall P,Q \in E$   & [Giao hoán]                   \\
+\end{tabular}
+
+\begin{proof}
+	Như đã giải thích trước đó, dễ thẩy tính \hyperref[th:th1:a]{cộng với điểm $\mathcal{O}$} và tính \hyperref[th:th1:b]{nghịch đảo}
+	là đúng vì $\mathcal{O}$ nằm trên mọi đường thẳng đứng. Tính \hyperref[th:th1:d]{giao hoán} dễ dàng chứng minh vì đường thẳng qua $P$ và $Q$
+	cũng là đường thẳng qua $Q$ và $P$.
+
+	Phần còn lại cần chứng minh của định lý \ref{th:th1} là tính \hyperref[th:th1:c]{kết hợp}. Có nhiều cách để chứng minh tính \hyperref[th:th1:c]{kết hợp}, nhưng không
+	cách nào trong số chúng đơn giản. Sau khi có đủ các kiến thức cần thiết
+	về luật cộng trên $E$ (\ref{th:th2}), bạn đọc có thể sử dụng để tự chứng minh. Có thể tìm thấy những chứng minh rõ ràng hơn ở \cite{halmos1982graduate}, \cite{silverman2009arithmetic} hoặc \cite{silverman1992rational}
+	và một vài quyển sách khác về đường cong elliptic.
+\end{proof}
+
+Tiếp theo, chúng ta sẽ chứng minh một vài công thức để dễ dàng cộng và trừ các điểm trên một đường cong elliptic.
+Những công thức này sử dụng hình học giải tích, tính toán vi phân và một vài thao tác đại số cơ bản.
+Chúng tôi đưa kết quả dưới dạng một định lý và đưa ra chứng minh sau đó.
+
+
+\begin{theorem}[Thuật toán cộng đường cong Elliptic]
+	\label{th:th2}
+	Cho
+	$$E:Y^2 = X^3 + AX + B$$
+	là một đường cong elliptic và $P_1$  và $P_2$ là hai điểm trên $E$.
+	\begin{enumerate}
+		\item Nếu $P_1 = \mathcal{O}$ thì $P_1 + P_2 = P_2$.
+		\item Ngược lại, nếu $P_2 = \mathcal{O}$ thì $P_1 + P_2 = P_1$.
+		\item Ngược lại, viết $P_1 = (x_1, y_2)$ và $P_2 = (x_2, y_2)$.
+		\item Nếu $x_1 = x_2$ và $y_1 = -y_2$ thì $P_1 + P_2 = \mathcal{O}$.
+		\item Nếu không, định nghĩa $\lambda$ bởi
+		      $$ \lambda = \begin{cases}
+				      \frac{y_2-y_1}{x_2 - x_1} & \text{nếu } P_1 \neq P_2 \\
+				      \frac{3x_1^2 + A}{2y_1}   & \text{nếu } P_1 = P_2.
+			      \end{cases} $$
+		      Và ta có $P_1 + P_2 = (x_3, y_3)$, trong đó:
+		      $$x_3 = \lambda^2 - x_1 - x_2 \ \ \  \text{ và } \ \ \  y_3 = \lambda(x_1 - x_3) - y_1.$$
+	\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+	Phần (1) và (2) của định lý \ref*{th:th2} là đúng, và (4) là trường hợp đường thẳng qua $P_1$ và $P_2$ là đường thẳng đứng, nên $P_1+P_2 = \mathcal{O}$.
+	(lưu ý, vẫn đúng với trường hợp $y_1 = y_2 = 0$.) Còn phần (5), ta để ý rằng $\lambda$ là hệ số góc của đường thẳng đi qua $P_1$ và $P_2$, và cũng là hệ số góc của tiếp tuyến tại $P_1$ nếu $P_1 = P_2$.
+	Trong cả 2 trường hợp, đường thẳng $L$ đều có phương trình $Y = \lambda X + \nu $ với $\nu = y_1 - \lambda x_1$. Thế $Y$ vào phường trình đường cong $E$ ta được:
+	$$(\lambda X + \nu) ^ 2  = X^3 + AX + B$$
+	nên
+	$$X^3 - \lambda^2X^2 + (A-2\lambda \nu)X + (B-\nu^2) = 0$$
+
+	Phương trình trên có 2 nghiệm đã biết trước là $x_1$ và $x_2$. Ta gọi nghiệm còn lại là $x_3$, phân tích thành nhân tử ta được
+	$$X^3 - \lambda^2X^2 + (A-2\lambda \nu)X + (B-\nu^2) = (X-x_1)(X-x_2)(X-x_3)$$
+	Đồng nhất hệ số 2 vế, ta được $x_3 = \lambda^2 - x_1 - x_2$. Cuối cùng, để tìm được $P_1 + P_2$, ta thay $x_3$ vào phương trình $L$ để tìm giao điểm còn lại của $L$ và $E$ rồi lấy đối xứng qua $Ox$.
+\end{proof}
+
