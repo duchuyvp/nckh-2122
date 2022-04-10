@@ -41,6 +41,19 @@ bao gồm lý thuyết số, hình học đại số, lý thuyết Galois, hình
 	Chú ý rằng không phải lúc nào $a^{-1}$ cũng tồn tại. Ví dụ với $m = 4, a = 2$, ta không thể tìm được $a^{-1}$ thỏa mãn đằng thức trên.
 \end{definition}
 
+\begin{definition}[Thặng dư bình phương]
+	Một số nguyên $q$ gọi là thặng dư bình phương theo modulo $m$ nếu nó đồng dư với một số chính phương theo modulo $m$.
+	Nói cách khác, tồn tại số nguyên $x$ thỏa mãn:
+	$$x^2 \equiv q (\mod{m})$$
+	Ngược lại, $q$ được gọi là \textit{phi thặng dư bình phương}
+
+\end{definition}
+
+\begin{definition}[Modular square root]
+	Một Modular square root $r$ của số nguyên $a$ theo modulo $m$ là một số nguyên thỏa mãn:
+	$$r^2 \equiv a (\mod{m})$$
+\end{definition}
+
 Xét $F_p$ là một trường hữu hạn (hữu hạn số phần tử nguyên dương):
 $$F_p = \{0, 1, 2, \ldots p-1\}$$
 Với $p$ là một số nguyên tố. $F_p$ giống như cách viết $Z/mZ$ là vành các số nguyên modulo $m$.
@@ -70,7 +83,7 @@ Tiếp theo, thay $X = 1$, ta được $X^3+3X+8 = 12$ và 12 là bình phương
 $$5^2 \equiv 12 (\mod{13}) \ \ \ \ \text{và} \ \ \ \ 8^2 \equiv 12 (\mod 13)$$.
 
 Ta tìm được 2 điểm $(1,5)$ và $(1,8)$ thuộc $E(\mathbb{F}_{13})$. Tiếp tục theo cách này, ta kết thúc với tập hoàn chỉnh gồm 9 điểm:
-$$E(\mathbb{F}_{13}) = \{(1,5), (1,8), (2,3), (2,10), (9,6), (9,7), (12,2), (12,11)\}.$$
+$$E(\mathbb{F}_{13}) = \{ \mathcal{O}, (1,5), (1,8), (2,3), (2,10), (9,6), (9,7), (12,2), (12,11)\}.$$
 
 Cho $P_1 = (x_1, y_1)$ và $P_2 = (x_2, y_2)$ thuộc $E(\mathbb{F}_{p})$. Ta định nghĩa tổng $P_1+P_2$ có tọa độ $(x_3, y_3)$ thu được bằng cách áp dụng thuật toán cộng (\ref{th:th2}).
 Vì tọa độ các độ các điểm đó nằm trong trường $\mathbb{F}_p$, ta thu được $(x_3, y_3)$ có tọa độ trong trường $\mathbb{F}_p$. Nhưng điều này vẫn chưa đủ chỉ ra
@@ -106,9 +119,129 @@ vì các tính toán \footnote{Đây là lúc thích hợp để hiểu rằng, 
 Tiếp tục, ta tính
 $$\nu = y_1 - \lambda x_1 = 7 - 8 \centerdot 9 = -65 = 0.$$
 Cuối cùng:
-$
+$$
 	\begin{array}{rcl}
 		x_3 & = & \lambda^2 - x_1 - x_2 = 64 -9 -1 = 54 = 2,         \\
 		y_3 & = & -(\lambda x_3 + \nu) = -8 \centerdot 2 = -16 = 10.
 	\end{array}
-$
+$$
+Và ta hoàn thành việc tính toán
+$$P+Q = (1,8) + (9,7) = (2,10) \in E(\mathbb{F}_{13})$$
+
+Tương tự, ta dùng thuật toán cộng để cộng điểm $P = (9,7)$ với chính nó. Lưu ý ta vẫn đang thực hiện tính toán trên trường $\mathbb{F}_{13}$, ta có:
+
+$$
+	\begin{array}{rcl}
+		\lambda & = & \frac{3x_1^2+A}{2y_1} = \frac{3\centerdot 9^ 2 + 3}{2 \centerdot 7} = \frac{246}{14} = 1 \\
+		\nu     & = & y_1-\lambda x_1 = 7 - 1 \centerdot 9 = 11 .
+	\end{array}
+$$
+
+sau đó
+$$
+	\begin{array}{rcl}
+		x_3 & = & \lambda^2 - x_1 - x_2 = 1 - 9 - 9 = 9          \\
+		y_3 & = & -(\lambda x_3 + \nu) = -1 \centerdot 9 -11 =6.
+	\end{array}
+$$
+
+nên $P+P = (9,7) + (9,7) = (9,6) \in E(\mathbb{F}_{13})$. Theo cách đó, ta có thể cộng mọi cặp điểm trong $E(\mathbb{F}_{13})$, kết quả được thể hiện ở \hyperref[fg:tb1]{Bảng 1}
+
+
+\begin{figure}[H]
+	\label{fg:tb1}
+	\caption{Phép cộng $E: Y^2 = X^3 + 3X + *$ trên trường $\mathbb{F}_{13}$}
+	$
+		\begin{array}{|c||c|c|c|c|c|c|c|c|c|}
+			\hline
+			            & \mathcal{O} & (1,5)       & (1,8)       & (2,3)   & (2,10)      & (9,6)       & (9,7)       & (12,2)      & (12,11)     \\
+			\hline
+			\hline
+			\mathcal{O} & \mathcal{O} & (1,5)       & (1,8)       & (2,3)   & (2,10)      & (9,6)       & (9,7)       & (12,2)      & (12,11)     \\
+			\hline
+			(1,5)       & (1,5)       & (2,10)      & \mathcal{O} & (1,8)   & (9,7)       & (2,3)       & (12,2)      & (12,11)     & (9,6)       \\
+			\hline
+			(1,8)       & (1,8)       & \mathcal{O} & (2,3)       & (9,6)   & (1,5)       & (12,11)     & (2,10)      & (9,7)       & (12,2)      \\
+			\hline
+			(2,3)       & (2,3)       & (1,8)       & (9,6)       & (12,11) & \mathcal{O} & (12,2)      & (1,5)       & (2,10)      & (9,7)       \\
+			\hline
+			(9,6)       & (9,6)       & (2,3)       & (12,11)     & (12,2)  & (1,8)       & (9,7)       & \mathcal{O} & (1,5)       & (2,10)      \\
+			\hline
+			(9,7)       & (9,7)       & (12,2)      & (2,10)      & (1,5)   & (12,11)     & \mathcal{O} & (9,6)       & (2,3)       & (1,8)       \\
+			\hline
+			(12,2)      & (12,2)      & (12,11)     & (9,7)       & (2,10)  & (9,6)       & (1,5)       & (2,3)       & (1,8)       & \mathcal{O} \\
+			\hline
+			(12,11)     & (12,11)     & (9,6)       & (12,2)      & (9,7)   & (2,3)       & (2,10)      & (1,8)       & \mathcal{O} & (1,5)       \\
+			\hline
+		\end{array}
+	$
+\end{figure}
+
+
+Tập điểm trong $E(\mathbb{F}_{p})$ là tập hữu hạn. Chính xác hơn, có  $p$ cách chọn $X$ và mỗi cách chọn $X$, phương trình
+$$Y^2 = X^3 + AX + B$$
+cho nhiều nhất 2 nghiệm $Y$. Thêm điểm $\mathcal{O}$, $\#E(\mathbb{F}_{p})$ có tối đa $2p+1$ điểm.
+
+Khi gán giá trị cho $X$, có ba trường hợp xảy ra với đại lượng
+$$X^3 + AX + B$$
+
+Thứ nhất, nó là thặng dư bình phương và có hai Modular square root, ta được hai điểm thuộc $E(\mathbb{F}_{p})$, trường hợp này xảy ra khoảng 50\%.
+Thứ hai, nó không là thặng dư bình phương, ta bỏ qua $X$, trường hợp này cũng chiếm khoảng 50\%.
+Thứ ba, $X^3 + AX + B = 0$, ta được một điểm thuộc $E(\mathbb{F}_{p})$, trường hợp này rất hiếm xảy ra \footnote{Phép đồng dư $X^3 + AX + B \equiv 0 (\mod p)$ có nhiều nhất ba nghiệm, và nếu $p$ lớn, tỉ lệ chọn ngẫu nhiên một trong số chúng là rất nhỏ.}.
+Theo đó, số phần tử của $E(\mathbb{F}_{p})$ xấp xỉ
+$$ \#E(\mathbb{F}_{p}) \approx 50\% \centerdot (2p + 1) = p + 1.$$
+
+Một định lý nổi tiếng của Hasse, sau này được Weil và Deligne tổng quát hóa rộng rãi,
+nói rằng điều này đúng với các dao động ngẫu nhiên
+
+\begin{theorem}[Hasse]
+	\label{th:th4}
+	Cho $E$ là đường cong elliptic trên trường $F_{p}$. Thì
+	$$ \#E(\mathbb{F}_{p}) = p + 1  -t_p \  \text{với $t_p$ thỏa mãn} \ \ |t_p| \leq 2\sqrt{p}.$$
+\end{theorem}
+
+\begin{definition}
+	Đại lượng $t_p = p+1 - \#E(\mathbb{F}_p)$ ở định lý \ref{th:th4} được gọi là \textit{dấu vết của Frobenius} trên $E/\mathbb{F}_p$.
+\end{definition}
+$t_p$ xuất hiện dưới dạng dấu vết của một ma trận 2x2 có vai trò như phép biến đổi tuyến tính trên một không gian vector 2 chiều liên kết với  $E/\mathbb{F}_p$.
+
+\begin{example}
+	\label{ex:ex6}
+	Cho phương trình $E$:
+	$$E: Y^2 = X^3 + 4X + 6$$
+\end{example}
+
+Chúng ta có thể coi $E$ là đường cong elliptic trên trường $F_{p}$ cho các trường hữu hạn $\mathbb{F}_{p}$ khác nhau và đếm số điểm thuộc $E(\mathbb{F}_p).$
+\hyperref[fg:tb2]{Bảng 2} liệt kê các kết quả với những số nguyên tố đầu tiên, cùng giá trị của $t_p$ để so sánh với giá trị của $2\sqrt{p}$.
+
+\begin{figure}[H]
+	\label{fg:tb2}
+	\caption{Số điểm và dấu vết Frobenius của $E:Y^2 = X^3 + 4X + 6$}
+	$$
+		\begin{array}{|c|c|c|c|}
+			\hline
+			p  & \#E(\mathbb{F}_p) & t_p & 2\sqrt{p} \\
+			\hline
+			\hline
+			3  & 4                 & 0   & 3.46      \\
+			\hline
+			5  & 8                 & -2  & 4.47      \\
+			\hline
+			7  & 11                & -3  & 5.29      \\
+			\hline
+			11 & 16                & -4  & 6.63      \\
+			\hline
+			13 & 14                & 0   & 7.21      \\
+			\hline
+			17 & 15                & 3   & 8.25      \\
+			\hline
+		\end{array}
+	$$
+\end{figure}
+
+\begin{remark}
+	Định lý \hyperref[th:th4]{Hasse} cho ta một giới hạn của $\#E(\mathbb{F}_p)$, nhưng không cung cấp một phương pháp để tính giá trị này.
+	Về nguyên tắc, để tìm $\#E(\mathbb{F}_p)$, ta có thể thay từng giá trị của $X$ rồi kiểm tra giá trị của $X^3 + AX + B$ dựa vào bảng thặng dư bình phương $p$, nhưng độ phức tạp thời gian là $O(p)$, rất kém hiệu quả.
+	Schoof \cite{schoof1985elliptic} đã tìm ra một phương pháp tốt hơn để tính $\#E(\mathbb{F}_p)$ trong thời gian $O(\log^6(p))$.
+	Nghĩa là ông ấy tìm được một thuật toán có thời gian đa thức. Thuật toán của Schoof được cải thiện bởi Elkies và Atkin, với tên gọi là \textit{thuật toán SEA} \cite{schoof1995counting}.
+\end{remark}
