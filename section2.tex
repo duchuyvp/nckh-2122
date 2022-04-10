@@ -35,6 +35,12 @@ bao gồm lý thuyết số, hình học đại số, lý thuyết Galois, hình
 	có nghiệm
 \end{definition}
 
+\begin{definition}[Nghịch đảo modulo]
+	Với một số nguyên $a$, ta gọi nghịch đảo modulo $m$ của $a$ là $a^{-1}$ là số nguyên thỏa mãn:
+	$$a * a^{-1} \equiv 1 (\mod{m})$$
+	Chú ý rằng không phải lúc nào $a^{-1}$ cũng tồn tại. Ví dụ với $m = 4, a = 2$, ta không thể tìm được $a^{-1}$ thỏa mãn đằng thức trên.
+\end{definition}
+
 Xét $F_p$ là một trường hữu hạn (hữu hạn số phần tử nguyên dương):
 $$F_p = \{0, 1, 2, \ldots p-1\}$$
 Với $p$ là một số nguyên tố. $F_p$ giống như cách viết $Z/mZ$ là vành các số nguyên modulo $m$.
@@ -88,5 +94,21 @@ $(x_3, y_3)$ có thể thuộc $E(\mathbb{F}_{p})$ hay không.
 \begin{example}
 	\label{ex:ex5}
 	Tiếp tục với đường cong $E$ từ ví dụ \ref{ex:ex4}
-	$$ E: Y^2 = X^3 + 3X + 8 \ \ \ \ \text{trên trường}\  F_{13} $$
+	$$ E: Y^2 = X^3 + 3X + 8 \ \ \ \ \text{trên trường}\  \mathbb{F}_{13} $$
 \end{example}
+Áp dụng thuật toán cộng (\ref{th:th2}) để cộng $P(9,7)$ và $Q(1,8)$, trước hết, ta tính hệ số góc của $L$:
+$$\lambda  =\frac{y_2-y_1}{x_2-x_1} = \frac{8-7}{1-9} = \frac{1}{-8} = \frac{1}{5} = 8$$
+
+vì các tính toán \footnote{Đây là lúc thích hợp để hiểu rằng, $\frac{1}{5}$ chỉ là \textit{kí hiệu} cho một nghiệm của phương trình $5x=1$.
+	Để gán một giá trị cho $\frac{1}{5}$, bạn phải biết giá trị đang ở trường nào. Trong trường $\mathbb{Q}$, giá trị của $\frac{1}{5}$ là một số bình thường,
+	nhưng ở trường $\mathbb{F}_{13}$ giá trị của $\frac{1}{5}$ là $8$, trong khi ở trường $\mathbb{F}_{11}$, giá trị của $\frac{1}{5}$ là $9$.
+	Còn ở trường $\mathbb{F}_5$, kí hiệu $\frac{1}{5}$ không được gán giá trị nào.} đang được thực hiện trên trường $\mathbb{F}_{13}$ nên $-8 = 5$ và $\frac{1}{5} = 5^{-1} = 8$.
+Tiếp tục, ta tính
+$$\nu = y_1 - \lambda x_1 = 7 - 8 \centerdot 9 = -65 = 0.$$
+Cuối cùng:
+$
+	\begin{array}{rcl}
+		x_3 & = & \lambda^2 - x_1 - x_2 = 64 -9 -1 = 54 = 2,         \\
+		y_3 & = & -(\lambda x_3 + \nu) = -8 \centerdot 2 = -16 = 10.
+	\end{array}
+$
