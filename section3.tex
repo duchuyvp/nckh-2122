@@ -311,13 +311,55 @@ Hệ thống mật mã khóa công khai ElGamal là ví dụ đầu tiên của 
 hệ thống mật mã khóa công khai, nên chúng tôi sẽ giải thích một cách chậm rãi và chi tiết. Alice bắt đầu bằng cách công khai một khóa công khai và một thuật toán. Khóa công khai đơn giản chỉ là một số, thuật toán là phương pháp Bob sử dụng để mã hóa thông điệp của anh ấy sử dụng khóa công khai của Alice.
 Alice không tiết lộ khóa riêng tư của mình. Khóa riêng tư cho phép Alice, chỉ Alice, giải mã thông điệp đã được mã hóa bằng khóa công khai của cô ấy.
 
-\textbf{\textcolor{red}{đọc ở đâyyyyyyyyyyyy}}
 
 Quá trình này áp dụng cho bất kỳ hệ thống mật mã khóa công khai nào. Đối với hệ mã hóa khóa công khai ElGamal, Alice cần một số nguyên tố $p$ lớn để bài toán Logarit rời rạc trong $\mathbb{F}^*_p$ trờ nên đủ khó,
-và cô ấy cần một phần từ $g$ .......
+và cô ấy cần một phần từ $g$ có bậc (nguyên tố) lớn.  $p$ và $g$ có thể được chọn bởi Alice, hoặc được lựa chọn trước bởi một bên đáng tin cậy.
 
+Alice chọn một số $a$ và giữ nó bí mật, đóng vai trò như khóa riêng tư, và tính
+$$A \equiv g^a \pmod{p}$$
+Alice công khai số $A$ và giữ bí mật số $a$
 
+Bây giờ, giả sử Bob muốn mã hóa một thông điệp bằng khóa công khai của Alice. Ta sẽ giả định tin nhắn của Bob là một số nguyên $m$ và $2\leq m \leq p$.
+Để giải mã $m$, Bob chọn ngẫu nhiên một số $k$ modulo $p$.\footnote{Hầu hết các hệ mã hóa khóa công khai yêu cầu sử dụng các số ngẫu nhiên
+	để hoạt động an toàn. Việc tạo ra ngẫu nhiên hoặc tìm kiếm ngẫu nhiên các số nguyên thực sự là một quá trình tinh vi.
+	Chúng tôi thảo luận vấn đề tạo số ngẫu nhiên trong Phần 8.2, nhưng hiện tại chúng tôi bỏ qua vấn đề này và giả định rằng
+	Bob không gặp khó khăn gì khi tạo số ngẫu nhiên theo modulo $p$.} Bob dùng $k$ để mã hóa một, chỉ một, thông điệp, và anh ấy bỏ nó đi.
+Số  $k$ được gọi là \textit{khóa tạm thời}, vì $k$ chỉ tồn tại cho mục đích mã hóa một thông điệp.
 
+Bob lấy thông điệp $m$, khóa tạm thời $k$ đã được chọn, và khóa công khai $A$ của Alice để tính hai giá trị
+$$  c_1 \equiv g^k \pmod{p} \text{ và } c_2 \equiv mA^k \pmod{p}$$
+Mật mã của Bob, hay $m$ sau khi được mã hóa, là cặp số $(c_1, c_2)$, sau đó gửi cho Alice.
+
+Alice sẽ giải mã bằng cách nào? Vì Alice biết giá trị $a$, cô ấy có thể tính
+$$ x \equiv c_1^a \pmod{p},$$
+
+từ đó tính được $x^{-1} \pmod{p}$. Tiếp theo Alice nhân $c_2$ với $x^{-1}$, ngạc nhiên chưa, kết quả chính là thông điệp $m$.
+Để chúng tôi giải thích bằng cách phân tích giá trị của $x^{-1} \cdot c_2$.
+
+$$
+	\begin{array}{rclcl}
+		x^{-1} \cdot c_2 & \equiv & (c_1^a)^{-1} \cdot c_2         & \pmod{p}, & \text{vì } x \equiv c_1^a \pmod{p}                  \\
+		                 & \equiv & (g^{ak})^{-1} \cdot (mA^k)     & \pmod{p}, & \text{vì } c_1 \equiv g^k, c_2 \equiv mA^k \pmod{p} \\
+		                 & \equiv & (g^{ak})^{-1} \cdot (m(g^a)^k) & \pmod{p}, & \text{vì } A \equiv g^a \pmod{p}                    \\
+		                 & \equiv & m                              & \pmod{p}, & \text{triệt tiêu }  g^{ak}                          \\
+	\end{array}
+$$
+
+\begin{example}
+	Alive chọn số $p =467$, và $g = 2$. Cô ấy chọn $a = 153$ làm khoá bí mật và tính toán khoá công khai $A$ của cô ấy
+	$$ A = \equiv g^a \equiv 2^{153} \equiv 224 \pmod{467}$$
+	Bob muốn gửi cho Alice thông điệp $m = 331$. Anh ta chọn ngẫu nhiên một
+	khóa tạm thời, giả sử anh ta chọn $k = 197$, và tính hai đại lượng
+	$$ c_1 \equiv 2^{197} \equiv 87 \pmod{467} \ \text{ và } \ c_2 \equiv 331 \cdot 224^{197} \equiv 57 \pmod{467}.$$
+	Cặp $(c_1, c_2) = (87, 57)$ là mật mã mà Bob gửi cho Alice.
+	Alice biết $a = 153$, cô ấy tính
+	$$ x \equiv c_1^a \equiv 87^{153} \equiv 367 \pmod{467}, \ \text{sau đó } \ x^{-1} \equiv 14 \pmod{467}$$.
+	Cuối cùng, Alice tính
+	$$c_2x^{-1} \equiv 57 \cdot 14 \equiv 331 \pmod{467}$$
+	và nhận được giá trị chính là $m$.
+\end{example}
+Eve cần làm gì để giả mã thông điệp? Eve đã biết các giá trị công khai là $p$ và $g$, cô ấy cũng biết khóa công khai $A\equiv g^a$ của Alice.
+Nếu Eve có thể giải được bài toán Logarit rời rạc, cô ấy sẽ tìm được $a$ và giải mã được thông điệp. Còn không, Eve rất khó tìm được $m$.
 \subsection{Bài toán Logarit rời rạc đường cong elliptic}
 Ở phần trước, ta đã thảo luận về bài toán Logarit rời rạc (DLP) trên trường hữu hạn $\mathbb{F}^*_p$.
 Để tạo ra một hệ mã hóa dựa trên DLP cho $\mathbb{F}^*_p$, Alice công khai 2 số $g$ và $h$, cô ấy giữ bí mật một số mũ $x$ là nghiệm của phương trình
