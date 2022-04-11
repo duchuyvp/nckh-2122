@@ -21,7 +21,7 @@
 % \usepackage[T5]{fontenc}
 
 
-% \usepackage{amsthm}
+\usepackage{amsthm}
 \usepackage[unicode]{hyperref}
 
 \usepackage{graphicx}
@@ -69,6 +69,7 @@
 \setlength{\oddsidemargin}{0.125in}
 \setlength{\textwidth}{6.25in}
 
+\theoremstyle{definition}
 % \setcounter{MaxMatrixCols}{30}
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{acknowledgement}[theorem]{Acknowledgement}
@@ -92,8 +93,8 @@
 \newtheorem{solution}[theorem]{Solution}
 \newtheorem{summary}[theorem]{Summary}
 % \newtheorem*{recap}{Recap}
-\newenvironment{proof}[1][Proof]{\noindent\textbf{#1.} }
-{\hfill \ \rule{0.5em}{0.5em}}
+% \newenvironment{proof}[1][Proof]{\noindent\textbf{#1.} }
+% {\hfill \ \rule{0.5em}{0.5em}}
 % \newmdenv[linecolor=black,skipabove=\topsep,skipbelow=\topsep,
 % leftmargin=-5pt,rightmargin=-5pt,
 % innerleftmargin=5pt,innerrightmargin=5pt]{textbox}
@@ -135,10 +136,10 @@
 \maketitle
 \tableofcontents
 \begin{abstract}
-    Mật mã đường cong Elliptic là phương pháp tiếp cận mã hóa khóa công khai dựa trên cấu trúc đại số của đường cong Elliptic trên các trường hữu hạn.
-    Đường cong elliptic bao gồm các điểm thỏa mãn phương trình $Y^2=X^3+AX+B$ cùng với một điểm $O$ ở vô cực. Chúng tôi sẽ giới thiệu và phân tích hệ mật mã
-    dựa trên đường cong elliptic bao gồm các bài toán Logarit rời rạc, trao đổi khóa, mã hóa - giải mã, chữ kí số, ... và một số ứng dụng của nó trong mật mã
-    như thuật toán phân tích thành nhân tử của đường cong elliptic Lenstra, thuật toán kiểm tra tính nguyên tố Pocklington-Lehmer.
+	Mật mã đường cong Elliptic là phương pháp tiếp cận mã hóa khóa công khai dựa trên cấu trúc đại số của đường cong Elliptic trên các trường hữu hạn.
+	Đường cong elliptic bao gồm các điểm thỏa mãn phương trình $Y^2=X^3+AX+B$ cùng với một điểm $O$ ở vô cực. Chúng tôi sẽ giới thiệu và phân tích hệ mật mã
+	dựa trên đường cong elliptic bao gồm các bài toán Logarit rời rạc, trao đổi khóa, mã hóa - giải mã, chữ kí số, ... và một số ứng dụng của nó trong mật mã
+	như thuật toán phân tích thành nhân tử của đường cong elliptic Lenstra, thuật toán kiểm tra tính nguyên tố Pocklington-Lehmer.
 \end{abstract}
 
 \section{Giới thiệu}

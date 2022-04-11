@@ -1,6 +1,341 @@
-\section{Bài toán Logarit rời rạc}
+\section{Bài toán Logarit rời rạc đường cong elliptic}
+\subsection{Bài toán Logarit rời rạc}
 
-Cho số nguyên tố $p$ và $a,b$ là các số nguyên không chia hết cho $p$. Giả sử ta biết tồn tại một số nguyên $k$ thỏa mãn
-$$a^k \equiv b \pmod{p}$$
+\begin{proposition}
+	\label{propos:pr1}
+	Cho số nguyên tố $p$, giả sử p là ước của tích $ab$ của 2 số nguyên $a$ và $b$. Thì $p$ là ước của ít nhât 1 trong 2 số $a$ hoặc $b$.
+	Nói chung là, nếu $p$ là ước của một tích các số nguyên, hay
+	$$ p | a_1a_2\ldots a_n$$
+	thì $p$ là ước của ít nhất một số $a_i$.
+\end{proposition}
 
-Bài toán Logarit rời rạc cổ điển là tìm ra $k$. Vì $k+(p-1)$ cũng là nghiệm, nên $k$  .......
+\begin{theorem}[Căn nguyên thủy]
+	\label{th:primitiveroot}
+	Cho số nguyên tố $p$. Tồn tại một phần tử $g \in \mathbb{F}^*_p$ mà lũy thừa của $g$ sinh ra mọi phần tử của $\mathbb{F}^*_p$, hay
+	$$ \mathbb{F}^*_p = \{ 1, g, g^2, g^3, \ldots, g^{p-2} \}.$$
+	Những phần tử thỏa mãn được gọi là căn nguyên thủy của $\mathbb{F}_p$ hoặc phần tử sinh của $\mathbb{F}_p^*$. Chúng là những phần tử của  $\mathbb{F}_p^*$ có bậc $p-1$
+\end{theorem}
+
+\begin{theorem}[Fermat nhỏ]
+	\label{th:fermat}
+	Cho số nguyên tố $p$ và số nguyên $a$. Ta có:
+	$$ a \equiv \begin{cases}
+			1 \pmod{p} & \text{nếu }  p\nmid a \\
+			0 \pmod{p} & \text{nếu }  p\mid a  \\
+		\end{cases} $$
+\end{theorem}
+\begin{proof}
+	Nếu $p \mid a$ thì mọi lũy thừa của $a$ chia hết cho $p$. Vậy ta chỉ cần xét trường hợp $p \nmid a$.
+	Nhìn vào dãy các số:
+	\begin{equation}
+		\label{eq:list}
+		a, 2a, 3a, \ldots, (p-1)a \pmod{p}%\ \ \text{giảm theo modulo $p$}
+	\end{equation}
+	Có $p-1$ số trong dãy. Ta khẳng định chúng đều khác nhau. Vì:
+
+	Ta lấy ra hai số bất kì trong $p-1$ số, là $ja \pmod{p}$ và $ka \pmod{p}$. Giả sử $ja \equiv ka \pmod{p}$, thì $(j-k)a \equiv 0 \pmod{p}$.
+	Mệnh đề \ref{propos:pr1} cho ta biết $p$ là ước của $j-k$ hoặc $a$.
+	Tuy nhiên, ta đã giả định $p$ không là ước của $a$ nên $p$ là ước của $j-k$.
+	Lại có $1 \leq j, k \leq p-1$, do đó $-(p-2) \leq j-k \leq p-2$.
+	Trong khoảng $-(p-2)$ đến $p-2$ chỉ có số $0$ chia hết cho $p$. Điều này chỉ ra $j-k = 0$ hay $j=k$.
+
+	Do đó, $p-1$ số trong \eqref{eq:list} đều khác nhau và cũng khác $0$.
+	Danh sách \eqref{eq:list} bao gồm $p - 1$ số phân biệt năm trong khoảng $(1; p - 1)$. Nhưng
+	chỉ có $p - 1$ số phân biệt giữa $1$ và $p - 1$, vì vậy danh sách các số \eqref{eq:list} đơn giản là danh sách các số $1,2, \ldots, p - 1$
+
+	Nhân tất cả các số trong \eqref{eq:list} ta được đồng dư thức sau:
+	$$\begin{array}{crclc}
+			            & a\cdot 2a \cdot 3a \ldots (p-1)a & \equiv & 1\cdot 2 \cdot 3 \ldots (p-1) & \pmod{p} \\
+			\Rightarrow & a^{p-1} \cdot (p-1)!             & \equiv & (p-1)!                        & \pmod{p} \\
+			\Rightarrow & a^{p-1}                          & \equiv & 1                             & \pmod{p} \\
+		\end{array}$$
+\end{proof}
+
+Cho $p$ là một số nguyên tố lớn. Định lý \ref{th:primitiveroot} cho chúng ta biết
+rằng tồn tại một căn nguyên thủy $g$ mà mọi phần tử khác $0$ của $F_p$ đều là lũy thừa của $g$. Cụ thể, $g^{p-1} = 1$ theo định lý nhỏ của Fermat (\ref{th:fermat}),
+và không có lũy thừa nhỏ hơn nào của $g$ bằng 1. Tương đương,
+$$ \mathbb{F}^*_p = \{1, g, g^2, g^3, \ldots, g^{p-2} \}$$
+
+\begin{definition}
+	Cho $g$ là căn nguyên thủy của $F_p$, và $h$ là một số khác 0 thuộc $F_p$. Bài toán Logarit rời rạc (DLP) là bài toán tìm một nghiệm $x$ thỏa mãn
+	$$ g^x \equiv h \pmod{p} $$
+	Số $x$ được gọi là logarit của $h$ theo cơ số $g$ và được ký hiệu $\log_g(h)$.
+\end{definition}
+
+\begin{remark}
+	Một thuật ngữ cũ hơn cho logarit rời rạc là \textit{chỉ số}, được ký hiệu là
+	$ind_g(h)$. Thuật ngữ chỉ số vẫn thường được sử dụng trong lý thuyết số. Nó cũng
+	thuận tiện trong khi phân biệt giữa logarit thông thường và logarit rời rạc, ví dụ, đại
+	lượng $log_2$ thường xuyên xuất hiện cả trong logarit thông thường và logarit rời rạc.
+\end{remark}
+
+\begin{remark}
+	Bài toán logarit rời rạc là bài toán tìm $x$ sao cho $g^x \equiv h$. Tuy nhiên nếu
+	có một nghiệm thì sẽ có vô số nghiệm, vì theo định lý nhỏ của Fermat $g^{p-1} \equiv 1(mod p)$. Do đó nếu $x$ là nghiệm thì $x + k(p-1)$ cũng là nghiệm với mọi giá trị $k$, vì
+	$$ g^{x + k(p-1)} \equiv g^x \cdot (g^{p-1})^k \equiv h  \cdot 1^k \equiv h \pmod{p} $$
+\end{remark}
+Do đó, $\log_g(h)$ được định nghĩa khi ta cộng hoặc trừ một bội số của $(p-1)$. Nói
+cách khác, $log_g(h)$ được đụnh nghĩa bởi modulo $p-1$. Không khó để chứng minh
+rằng $log_g$ được định nghĩa bởi hàm xác định:
+$$ log_g: \mathbb{F}^*_p \rightarrow \frac{\mathbb{Z}}{(p-1)\mathbb{Z}} $$
+
+Đôi khi, để cụ thể hóa, ta có thể coi  ``logarit rời rạc'' là số nguyên $x$ nằm giữa $0$ và $p - 2$ thỏa mãn đồng
+dư thức $g^x \equiv h \pmod{p}$
+
+\begin{remark}
+	Không khó để chứng minh rằng
+	$$ \log_g(ab) = \log_g(a) + \log_g(b) \ \text{$\forall a, b \in \mathbb{F}^*_p$ } $$
+\end{remark}
+
+\begin{figure}[H]
+	\label{fg:tb3}
+	\caption{Lũy thừa và logarit rời rạc với $g = 627$ modulo $p=941$}
+	\begin{minipage}{0.4\textwidth}
+		\begin{minipage}{0.4\textwidth}
+			$$\begin{array}{|c|c|}
+					\hline
+					n  & g^n \mod p \\
+					\hline
+					\hline
+					1  & 627        \\
+					\hline
+					2  & 732        \\
+					\hline
+					3  & 697        \\
+					\hline
+					4  & 395        \\
+					\hline
+					5  & 182        \\
+					\hline
+					6  & 253        \\
+					\hline
+					7  & 543        \\
+					\hline
+					8  & 760        \\
+					\hline
+					9  & 374        \\
+					\hline
+					10 & 189        \\
+					\hline
+				\end{array}$$
+		\end{minipage}
+		\hfill
+		\begin{minipage}{0.4\textwidth}
+			$$\begin{array}{|c|c|}
+					\hline
+					n  & g^n \mod p \\
+					\hline
+					\hline
+					11 & 878        \\
+					\hline
+					12 & 21         \\
+					\hline
+					13 & 934        \\
+					\hline
+					14 & 316        \\
+					\hline
+					15 & 522        \\
+					\hline
+					16 & 767        \\
+					\hline
+					17 & 58         \\
+					\hline
+					18 & 608        \\
+					\hline
+					19 & 111        \\
+					\hline
+					20 & 904        \\
+					\hline
+				\end{array}$$
+		\end{minipage}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{0.4\textwidth}
+		\begin{minipage}{0.4\textwidth}
+			$$\begin{array}{|c|c|}
+					\hline
+					h  & \log_g(h) \\
+					\hline
+					\hline
+					1  & 0         \\
+					\hline
+					2  & 183       \\
+					\hline
+					3  & 469       \\
+					\hline
+					4  & 366       \\
+					\hline
+					5  & 356       \\
+					\hline
+					6  & 652       \\
+					\hline
+					7  & 483       \\
+					\hline
+					8  & 549       \\
+					\hline
+					9  & 938       \\
+					\hline
+					10 & 539       \\
+					\hline
+				\end{array}$$
+		\end{minipage}
+		\hfill
+		\begin{minipage}{0.4\textwidth}
+			$$\begin{array}{|c|c|}
+					\hline
+					h  & \log_g(h) \\
+					\hline
+					\hline
+					11 & 429       \\
+					\hline
+					12 & 835       \\
+					\hline
+					13 & 279       \\
+					\hline
+					14 & 666       \\
+					\hline
+					15 & 825       \\
+					\hline
+					16 & 732       \\
+					\hline
+					17 & 337       \\
+					\hline
+					18 & 181       \\
+					\hline
+					19 & 43        \\
+					\hline
+					20 & 722       \\
+					\hline
+				\end{array}$$
+		\end{minipage}
+	\end{minipage}
+\end{figure}
+
+\begin{definition}
+	Cho  $G$ là một nhóm được trang bị phép toán hai ngôi, ký hiệu là $\star$. Bài toán logarit rời rạc trên $G$ được định nghĩa như sau: Với hai phần tử cho trước $g$ và $h$ thuộc $G$, tìm một số nguyên $x$ thỏa mãn
+	$$ \underbrace{g \star g \star g \star \ldots \star g}_{\text{$x$ lần}} = h$$
+\end{definition}
+
+\subsection{Trao đổi khóa Diffie - Hellman}
+
+Thuật toán trao đổi khóa Diffie-Hellman giải quyết tình huống sau. Alice và
+Bob muốn chia sẻ một khóa bí mật để sử dụng trong mật mã đối xứng, nhưng
+phương tiện liên lạc duy nhất của họ không an toàn. Mọi thông tin mà họ trao
+đổi đều được quan sát bởi đối thủ của họ, Eve. Làm cách nào để Alice và Bob có
+thể chia sẻ khóa mà Eve không biết? Thoạt nhìn, có vẻ như Alice và Bob phải
+đối mặt với một nhiệm vụ bất khả thi. Tuy nhiên độ khó của bài toán logarit rời
+rạc trong $\mathbb{F}^*_p$ cung cấp một giải pháp khả thi.
+
+Đầu tiên, Alice và Bob thống nhất sử dụng một số nguyên tố $p$ và một số nguyên khác khoong $g$ theo modulo $p$. Hai giá trị này là công khai nên Eve cũng có thể biết.
+Vì nhiều lý do sẽ được thảo luận ở phần sau, tốt nhất là họ nên chọn $g$ sao cho thứ tự của nó trong $\mathbb{F}^*_p$ là một số nguyên tố lớn.
+
+Tiếp theo, Alice bí mật chọn một số nguyên $a$ và không cho ai biết. Cùng lúc đó, Bob cũng bí mật chọn một số nguyên $b$.
+Alice và Bob sử dụng những số bí mật của họ và tính
+$$\underbrace{A \equiv g^a \pmod{p}}_{\text{Alice tính}} \text{ và } \underbrace{B \equiv g^b \pmod{p}}_{\text{Bob tính}}$$.
+
+Sau đó, họ trao đổi với nhau giá trị vừa tính được, Alice gửi $A$ cho Bob và Bob gửi $B$ cho Alice. Eve cũng có thể nhìn thấy được các giá trị này, vì họ đang giao tiếp trên một kênh không an toàn.
+
+Cuối cùng, Bob và Alice tiếp tục sử dụng những số bí mật mà họ đã chọn ở bước trước đó, và tính
+$$\underbrace{A' \equiv B^a \pmod{p}}_{\text{Alice tính}} \text{ và } \underbrace{B' \equiv A^b \pmod{p}}_{\text{Bob tính}}$$.
+
+Giá trị cả hai thu được, $A'$ và $B'$, là bằng nhau, vì:
+$$A' \equiv B^a \equiv (g^a)^b \equiv g^{ab} \equiv (g^b)^a \equiv A^b \equiv B' \pmod{p}.$$
+
+Giá trị này là khóa mà cả hai cùng chấp nhận sử dụng.
+% Thuật toán Trao đổi khoá Diffie - Hellman được tóm tắt ở bảng sau
+
+% \begin{tabular}{|c|c|}
+% 	\hline
+% 	\multicolumn{2}{Tạo tham số công khai}                                                                                                     \\
+% 	\hline
+% 	\multicolumn{2}{c}{Một bên chọn và công khai một số nguyên tố $p$ (lớn) và một số nguyên $g$ có bậc nguyên tố lớn trong $\mathbb{F}^*_p$}. \\
+% 	\hline
+% 	\hline
+% 	\multicolumn{2}{c}{Thực hiện tính toán bí mật}                                                                                             \\
+% 	Alice                         & Bob                                                                                                        \\
+% 	\hline
+% 	Chọn bí mật một số nguyên $a$ & Chọn bí mật một số nguyên $b$                                                                              \\
+% 	Tính $A \equiv g^a \pmod{p}$  & Tính $B \equiv g^b \pmod{p}$                                                                               \\
+% 	\hline
+% 	\hline
+% 	\multicolumn{2}{c}{Trao đổi giá trị công khai}                                                                                             \\
+% 	Alice gửi $A$ cho Bob         & $\longrightarrow A$                                                                                        \\
+% 	$B \longleftarrow$            & Bob gửi $B$ cho Alice                                                                                      \\
+% 	\hline
+% 	\hline
+% 	\multicolumn{2}{c}{Tiếp tục thực hiện tính toán bí mật}                                                                                    \\
+% 	Alice                         & Bob                                                                                                        \\
+% 	\hline
+% 	Tính $B^a \pmod{p}$           & Tính $A^b \pmod{p}$                                                                                        \\
+% 	Khóa bí mật của cả hai là giá trị $B^a \equiv (g^b)^a \equiv g^{ab} \equiv (g^a)^b \equiv A^b \pmod{p}$
+% \end{tabular}
+
+\begin{example}
+	Alice và Bob chọn số nguyên tố $p = 941$,và căn nguyên thủy $g = 627$.
+	Alice bí mật chọn $a= 347$ và tính được $A = 390 \equiv 627^{347} \pmod{941}$. Bob chọn $b= 781$, tính được $B = 691 \equiv 627^{781} \pmod{941}$. Alice và Bob trao đổi 2 số $A$ và $B$. Việc gửi của Alice và Bob được
+	thực hiện qua một kênh không an toàn, vì vậy hai giá trị $A = 390$ và $B = 691$
+	được coi là công khai. Các số $a = 347$ và $b = 781$ không được
+	truyền đi và được giữ bí mật. Sau đó, Alice và Bob đều có thể tính được số
+	$$ 470 \equiv 627 ^{347 \cdot 781} \equiv A^b \equiv B^a \pmod{941}.$$
+	Vậy $470$ là khóa bí mật được dùng chung.
+\end{example}
+Giả sử Eve đã nhìn thấy toàn bộ quá trình trao đổi khóa, Eve có thể tìm được khóa chung của Alice và Bob nếu cô ấy giải được một trong hai phương trình
+$$627^a \equiv 390 \pmod{941} \textit{ hoặc } 627^b \equiv 691 \pmod{941}.$$
+
+
+Tất nhiên, ví dụ của chúng tôi sử dụng các số quá nhỏ để đủ khả năng bảo
+mật cho Alice và Bob, vì máy tính của Eve cần rất ít thời gian để kiểm
+tra tất cả các luỹ thừa của $627$ modulo $941$.
+
+Như ta đã biết, đây là cách duy nhất để Eve tìm được khóa mà không cần trợ giúp của Alice và Bob. Nguyên tắc hiện tại đề xuất rằng
+Alice và Bob nên chọn một số nguyên tố $p$ có khoảng 1000 bit (tức là $p \approx 2^{1000}$) và
+một phần tử $g$ có bậc là số nguyên tố và xấp xỉ $\frac{p}{2}$. Khi đó, Eve sẽ phải đối mặt với một nhiệm vụ thực sự khó khăn.
+
+Eve biết giá trị của $A$ và $B$, cô ấy cũng biết $g$ và $p$.
+Vì vậy nếu Eve có thể giải được DLP, thì cô ấy
+có thể tìm được $a$ và $b$, sau đó có thể dễ dàng tính toán $g^{ab}$ và khóa bí mật
+chung của Alice và Bob. Alice và Bob vẫn an toàn với điều kiện là Eve
+không thể giải được DLP.
+
+\begin{definition}
+	Cho số nguyên tố $p$ và số nguyên $g$. \textit{Bài toán Diffie-Hellman} (DHP) là bài toán tìm giá trị của $g^{ab} \pmod{p}$ khi biết trước giá trị của $g^a \pmod{p}$ và $g^b \pmod{p}$.
+\end{definition}
+
+\subsection{Hệ thống mật mã khóa công khai ElGamal}
+Mặc dù thuật toán trao đổi khóa Diffie-Hellman cung cấp một phương pháp
+chia sẻ công khai một khóa bí mật ngẫu nhiên, nhưng nó không đạt được mục
+tiêu đầy đủ là trở thành một hệ thống mật mã khóa công khai, vì một hệ thống
+mật mã cho phép trao đổi thông tin cụ thể, không chỉ là một chuỗi bit ngẫu
+nhiên.
+Hệ thống mật mã khóa công khai ElGamal là ví dụ đầu tiên của chúng tôi về
+hệ thống mật mã khóa công khai, nên chúng tôi sẽ giải thích một cách chậm rãi và chi tiết. Alice bắt đầu bằng cách công khai một khóa công khai và một thuật toán. Khóa công khai đơn giản chỉ là một số, thuật toán là phương pháp Bob sử dụng để mã hóa thông điệp của anh ấy sử dụng khóa công khai của Alice.
+Alice không tiết lộ khóa riêng tư của mình. Khóa riêng tư cho phép Alice, chỉ Alice, giải mã thông điệp đã được mã hóa bằng khóa công khai của cô ấy.
+
+\textbf{\textcolor{red}{đọc ở đâyyyyyyyyyyyy}}
+
+Quá trình này áp dụng cho bất kỳ hệ thống mật mã khóa công khai nào. Đối với hệ mã hóa khóa công khai ElGamal, Alice cần một số nguyên tố $p$ lớn để bài toán Logarit rời rạc trong $\mathbb{F}^*_p$ trờ nên đủ khó,
+và cô ấy cần một phần từ $g$ .......
+
+
+
+\subsection{Bài toán Logarit rời rạc đường cong elliptic}
+Ở phần trước, ta đã thảo luận về bài toán Logarit rời rạc (DLP) trên trường hữu hạn $\mathbb{F}^*_p$.
+Để tạo ra một hệ mã hóa dựa trên DLP cho $\mathbb{F}^*_p$, Alice công khai 2 số $g$ và $h$, cô ấy giữ bí mật một số mũ $x$ là nghiệm của phương trình
+$$ h \equiv g \pmod{p} $$
+Hãy xem xét Alice có thể làm gì tương tự với một đường cong elliptic trên trường $\mathbb{F}_p$.  Nếu Alice xem $g$ và $h$ như 2 phần tử thuộc nhóm $\mathbb{F}_p$,
+thì bài toán logarit rời rạc yêu cầu Eve tìm một số $x$ thỏa mãn
+$$ h \equiv \underbrace{ g \cdot g \cdot g \ldots g }_{\text{$x$ số hạng}} \pmod{p} $$
+
+Nói cách khác, Eve cần xác định phải nhân $g$ bao nhiêu lần để có kết quả đồng dư với $h$ theo modulo $p$.
+
+Với thống tin này, Alice hoàn toàn có thể tìm được với một nhóm điểm $E(\mathbb{F}_p)$ của đường cong elliptic $E$ trên trường $\mathbb{F}_p$.
+Cô ấy công khai 2 điểm $P$ và $Q$ thuộc $E(\mathbb{F}_p)$, và giữ bí mật một số $n$ sao cho
+$$ Q = P+P+ \ldots +P+P = nP$$
+Eve cần tìm ra phải cộng $P$ bao nhiêu lần để được $Q$. Phép cộng trên $E$ là một phép toán phức tạp, xây dựng một bài toán logarit rời rạc trên đường cong này rất khó để giải.
+
+\begin{definition}
+	Cho đường cong elliptic $E$ trên trường $\mathbb{F}_p$ và 2 điểm $P$ và $Q$ thuộc $E(\mathbb{F}_p)$. \textit{Bài toán logarit rời rạc trên đường cong elliptic} (ECDLP) là bài toán tìm số nguyên $n$ thỏa mãn $Q=nP$.
+	Tương tự với bài toán Logarit rời rạc cho $\mathbb{F}^*_p$, ta ký hiệu cho $n$ bởi
+	$$  n = \log_P(Q)$$
+	và ta gọi $n$ là \textit{Logarit rời rạc elliptic} của $Q$ đối với $P$.
+\end{definition}
