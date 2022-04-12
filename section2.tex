@@ -1,258 +1,521 @@
-\section{Đường cong elliptic trên trường hữu hạn}
+\section{Logarit rời rạc vaf Diffie-Hellman}
+\subsection{Bài toán Logarit rời rạc}
 
-Trong phần trước, chúng ta đã phát triển lý thuyết về đường cong elip về mặt hình học.
-Tuy nhiên, để áp dụng lý thuyết về đường cong elliptic vào mật mã,
-chúng ta cần xem xét các đường cong elliptic mà các điểm của nó có tọa độ trong một trường hữu hạn $F_p$.
-Các ứng dụng về mật mã của đường cong Elliptic đa số chỉ sử dụng các đường
-cong trên trường hữu hạn.
+\begin{proposition}
+	\label{propos:pr1}
+	Cho số nguyên tố $p$, giả sử p là ước của tích $ab$ của 2 số nguyên $a$ và $b$. Thì $p$ là ước của ít nhât 1 trong 2 số $a$ hoặc $b$.
+	Nói chung là, nếu $p$ là ước của một tích các số nguyên, hay
+	$$ p | a_1a_2\ldots a_n$$
+	thì $p$ là ước của ít nhất một số $a_i$.
+\end{proposition}
 
-\subsection{Sơ bộ}
+\begin{theorem}[Căn nguyên thủy]
+	\label{th:primitiveroot}
+	Cho số nguyên tố $p$. Tồn tại một phần tử $g \in \mathbb{F}^*_p$ mà lũy thừa của $g$ sinh ra mọi phần tử của $\mathbb{F}^*_p$, hay
+	$$ \mathbb{F}^*_p = \{ 1, g, g^2, g^3, \ldots, g^{p-2} \}.$$
+	Những phần tử thỏa mãn được gọi là căn nguyên thủy của $\mathbb{F}_p$ hoặc phần tử sinh của $\mathbb{F}_p^*$. Chúng là những phần tử của  $\mathbb{F}_p^*$ có bậc $p-1$
+\end{theorem}
+
+\begin{theorem}[Fermat nhỏ]
+	\label{th:fermat}
+	Cho số nguyên tố $p$ và số nguyên $a$. Ta có:
+	$$ a \equiv \begin{cases}
+			1 \pmod{p} & \text{nếu }  p\nmid a \\
+			0 \pmod{p} & \text{nếu }  p\mid a  \\
+		\end{cases} $$
+\end{theorem}
+\begin{proof}
+	Nếu $p \mid a$ thì mọi lũy thừa của $a$ chia hết cho $p$. Vậy ta chỉ cần xét trường hợp $p \nmid a$.
+	Nhìn vào dãy các số:
+	\begin{equation}
+		\label{eq:list}
+		a, 2a, 3a, \ldots, (p-1)a \pmod{p}%\ \ \text{giảm theo modulo $p$}
+	\end{equation}
+	Có $p-1$ số trong dãy. Ta khẳng định chúng đều khác nhau. Vì:
+
+	Ta lấy ra hai số bất kì trong $p-1$ số, là $ja \pmod{p}$ và $ka \pmod{p}$. Giả sử $ja \equiv ka \pmod{p}$, thì $(j-k)a \equiv 0 \pmod{p}$.
+	Mệnh đề \ref{propos:pr1} cho ta biết $p$ là ước của $j-k$ hoặc $a$.
+	Tuy nhiên, ta đã giả định $p$ không là ước của $a$ nên $p$ là ước của $j-k$.
+	Lại có $1 \leq j, k \leq p-1$, do đó $-(p-2) \leq j-k \leq p-2$.
+	Trong khoảng $-(p-2)$ đến $p-2$ chỉ có số $0$ chia hết cho $p$. Điều này chỉ ra $j-k = 0$ hay $j=k$.
+
+	Do đó, $p-1$ số trong \eqref{eq:list} đều khác nhau và cũng khác $0$.
+	Danh sách \eqref{eq:list} bao gồm $p - 1$ số phân biệt năm trong khoảng $(1; p - 1)$. Nhưng
+	chỉ có $p - 1$ số phân biệt giữa $1$ và $p - 1$, vì vậy danh sách các số \eqref{eq:list} đơn giản là danh sách các số $1,2, \ldots, p - 1$
+
+	Nhân tất cả các số trong \eqref{eq:list} ta được đồng dư thức sau:
+	$$\begin{array}{crclc}
+			            & a\cdot 2a \cdot 3a \ldots (p-1)a & \equiv & 1\cdot 2 \cdot 3 \ldots (p-1) & \pmod{p} \\
+			\Rightarrow & a^{p-1} \cdot (p-1)!             & \equiv & (p-1)!                        & \pmod{p} \\
+			\Rightarrow & a^{p-1}                          & \equiv & 1                             & \pmod{p} \\
+		\end{array}$$
+\end{proof}
+
+Cho $p$ là một số nguyên tố lớn. Định lý \ref{th:primitiveroot} cho chúng ta biết
+rằng tồn tại một căn nguyên thủy $g$ mà mọi phần tử khác $0$ của $F_p$ đều là lũy thừa của $g$. Cụ thể, $g^{p-1} = 1$ theo định lý nhỏ của Fermat (\ref{th:fermat}),
+và không có lũy thừa nhỏ hơn nào của $g$ bằng 1. Tương đương,
+$$ \mathbb{F}^*_p = \{1, g, g^2, g^3, \ldots, g^{p-2} \}$$
+
 \begin{definition}
-	Trường là một tập hợp K có nhiều hơn một phần tử, được định nghĩa hai phép toán cộng và nhân,
-	ký hiệu bởi dấu $(+)$ và dấu $(.)$. Trường thỏa mãn các tính chất của số học.
+	Cho $g$ là căn nguyên thủy của $F_p$, và $h$ là một số khác 0 thuộc $F_p$. Bài toán Logarit rời rạc (DLP) là bài toán tìm một nghiệm $x$ thỏa mãn
+	$$ g^x \equiv h \pmod{p} $$
+	Số $x$ được gọi là logarit của $h$ theo cơ số $g$ và được ký hiệu $\log_g(h)$.
 \end{definition}
-Các tính chất số học:
-TODO:
-\begin{enumerate}
-	\item Tính kết hợp
-	\item Tính giao hoán
-	\item Đơn vị cộng và đơn vị nhân
-	\item Nghịch đảo phép cộng
-	\item Nghịch đảo phép nhân
-	\item Tính phân phối
-\end{enumerate}
+
+\begin{remark}
+	Một thuật ngữ cũ hơn cho logarit rời rạc là \textit{chỉ số}, được ký hiệu là
+	$ind_g(h)$. Thuật ngữ chỉ số vẫn thường được sử dụng trong lý thuyết số. Nó cũng
+	thuận tiện trong khi phân biệt giữa logarit thông thường và logarit rời rạc, ví dụ, đại
+	lượng $log_2$ thường xuyên xuất hiện cả trong logarit thông thường và logarit rời rạc.
+\end{remark}
+
+\begin{remark}
+	\label{rm:2.2}
+	Bài toán logarit rời rạc là bài toán tìm $x$ sao cho $g^x \equiv h$. Tuy nhiên nếu
+	có một nghiệm thì sẽ có vô số nghiệm, vì theo định lý nhỏ của Fermat $g^{p-1} \equiv 1(mod p)$. Do đó nếu $x$ là nghiệm thì $x + k(p-1)$ cũng là nghiệm với mọi giá trị $k$, vì
+	$$ g^{x + k(p-1)} \equiv g^x \cdot (g^{p-1})^k \equiv h  \cdot 1^k \equiv h \pmod{p} $$
+\end{remark}
+Do đó, $\log_g(h)$ được định nghĩa khi ta cộng hoặc trừ một bội số của $(p-1)$. Nói
+cách khác, $log_g(h)$ được đụnh nghĩa bởi modulo $p-1$. Không khó để chứng minh
+rằng $log_g$ được định nghĩa bởi hàm xác định:
+$$ log_g: \mathbb{F}^*_p \rightarrow \frac{\mathbb{Z}}{(p-1)\mathbb{Z}} $$
+
+Đôi khi, để cụ thể hóa, ta có thể coi  ``logarit rời rạc'' là số nguyên $x$ nằm giữa $0$ và $p - 2$ thỏa mãn đồng
+dư thức $g^x \equiv h \pmod{p}$
+
+\begin{remark}
+	Không khó để chứng minh rằng
+	$$ \log_g(ab) = \log_g(a) + \log_g(b) \ \text{$\forall a, b \in \mathbb{F}^*_p$ } $$
+\end{remark}
+
+\begin{figure}[H]
+	\label{fg:tb3}
+	\caption{Lũy thừa và logarit rời rạc với $g = 627$ modulo $p=941$}
+	\begin{minipage}{0.4\textwidth}
+		\begin{minipage}{0.4\textwidth}
+			$$\begin{array}{|c|c|}
+					\hline
+					n  & g^n \mod p \\
+					\hline
+					\hline
+					1  & 627        \\
+					\hline
+					2  & 732        \\
+					\hline
+					3  & 697        \\
+					\hline
+					4  & 395        \\
+					\hline
+					5  & 182        \\
+					\hline
+					6  & 253        \\
+					\hline
+					7  & 543        \\
+					\hline
+					8  & 760        \\
+					\hline
+					9  & 374        \\
+					\hline
+					10 & 189        \\
+					\hline
+				\end{array}$$
+		\end{minipage}
+		\hfill
+		\begin{minipage}{0.4\textwidth}
+			$$\begin{array}{|c|c|}
+					\hline
+					n  & g^n \mod p \\
+					\hline
+					\hline
+					11 & 878        \\
+					\hline
+					12 & 21         \\
+					\hline
+					13 & 934        \\
+					\hline
+					14 & 316        \\
+					\hline
+					15 & 522        \\
+					\hline
+					16 & 767        \\
+					\hline
+					17 & 58         \\
+					\hline
+					18 & 608        \\
+					\hline
+					19 & 111        \\
+					\hline
+					20 & 904        \\
+					\hline
+				\end{array}$$
+		\end{minipage}
+	\end{minipage}
+	\hfill
+	\begin{minipage}{0.4\textwidth}
+		\begin{minipage}{0.4\textwidth}
+			$$\begin{array}{|c|c|}
+					\hline
+					h  & \log_g(h) \\
+					\hline
+					\hline
+					1  & 0         \\
+					\hline
+					2  & 183       \\
+					\hline
+					3  & 469       \\
+					\hline
+					4  & 366       \\
+					\hline
+					5  & 356       \\
+					\hline
+					6  & 652       \\
+					\hline
+					7  & 483       \\
+					\hline
+					8  & 549       \\
+					\hline
+					9  & 938       \\
+					\hline
+					10 & 539       \\
+					\hline
+				\end{array}$$
+		\end{minipage}
+		\hfill
+		\begin{minipage}{0.4\textwidth}
+			$$\begin{array}{|c|c|}
+					\hline
+					h  & \log_g(h) \\
+					\hline
+					\hline
+					11 & 429       \\
+					\hline
+					12 & 835       \\
+					\hline
+					13 & 279       \\
+					\hline
+					14 & 666       \\
+					\hline
+					15 & 825       \\
+					\hline
+					16 & 732       \\
+					\hline
+					17 & 337       \\
+					\hline
+					18 & 181       \\
+					\hline
+					19 & 43        \\
+					\hline
+					20 & 722       \\
+					\hline
+				\end{array}$$
+		\end{minipage}
+	\end{minipage}
+\end{figure}
 
 \begin{definition}
-	Trường hữu hạn (còn gọi là trường Galois) là những trường có hữu hạn số phần tử.
-	Bậc của một trường hữu hạn là số phần tử của nó, là số nguyên tố hoặc lũy thừa nguyên tố.
-\end{definition}
-Trường hữu hạn là cơ bản trong một số lĩnh vực toán học và khoa học máy tính,
-bao gồm lý thuyết số, hình học đại số, lý thuyết Galois, hình học hữu hạn, mật mã và lý thuyết mã hóa.
-
-\begin{definition}[Bình phương modulo]
-	Cho số nguyên dương $m \geq 2$. Số nguyên $a$ được gọi là \textit{bình phương modulo $m$} nếu $\gcd(a,m) = 1$ và phương trình
-	$$x^2 \equiv a (\mod{m})$$
-	có nghiệm
+	Cho  $G$ là một nhóm được trang bị phép toán hai ngôi, ký hiệu là $\star$. Bài toán logarit rời rạc trên $G$ được định nghĩa như sau: Với hai phần tử cho trước $g$ và $h$ thuộc $G$, tìm một số nguyên $x$ thỏa mãn
+	$$ \underbrace{g \star g \star g \star \ldots \star g}_{\text{$x$ lần}} = h$$
 \end{definition}
 
-\begin{definition}[Nghịch đảo modulo]
-	Với một số nguyên $a$, ta gọi nghịch đảo modulo $m$ của $a$ là $a^{-1}$ là số nguyên thỏa mãn:
-	$$a * a^{-1} \equiv 1 (\mod{m})$$
-	Chú ý rằng không phải lúc nào $a^{-1}$ cũng tồn tại. Ví dụ với $m = 4, a = 2$, ta không thể tìm được $a^{-1}$ thỏa mãn đằng thức trên.
+\subsection{Trao đổi khóa Diffie - Hellman}
+
+Thuật toán trao đổi khóa Diffie-Hellman giải quyết tình huống sau. Alice và
+Bob muốn chia sẻ một khóa bí mật để sử dụng trong mật mã đối xứng, nhưng
+phương tiện liên lạc duy nhất của họ không an toàn. Mọi thông tin mà họ trao
+đổi đều được quan sát bởi đối thủ của họ, Eve. Làm cách nào để Alice và Bob có
+thể chia sẻ khóa mà Eve không biết? Thoạt nhìn, có vẻ như Alice và Bob phải
+đối mặt với một nhiệm vụ bất khả thi. Tuy nhiên độ khó của bài toán logarit rời
+rạc trong $\mathbb{F}^*_p$ cung cấp một giải pháp khả thi.
+
+Đầu tiên, Alice và Bob thống nhất sử dụng một số nguyên tố $p$ và một số nguyên khác khoong $g$ theo modulo $p$. Hai giá trị này là công khai nên Eve cũng có thể biết.
+Vì nhiều lý do sẽ được thảo luận ở phần sau, tốt nhất là họ nên chọn $g$ sao cho thứ tự của nó trong $\mathbb{F}^*_p$ là một số nguyên tố lớn.
+
+Tiếp theo, Alice bí mật chọn một số nguyên $a$ và không cho ai biết. Cùng lúc đó, Bob cũng bí mật chọn một số nguyên $b$.
+Alice và Bob sử dụng những số bí mật của họ và tính
+$$\underbrace{A \equiv g^a \pmod{p}}_{\text{Alice tính}} \text{ và } \underbrace{B \equiv g^b \pmod{p}}_{\text{Bob tính}}$$.
+
+Sau đó, họ trao đổi với nhau giá trị vừa tính được, Alice gửi $A$ cho Bob và Bob gửi $B$ cho Alice. Eve cũng có thể nhìn thấy được các giá trị này, vì họ đang giao tiếp trên một kênh không an toàn.
+
+Cuối cùng, Bob và Alice tiếp tục sử dụng những số bí mật mà họ đã chọn ở bước trước đó, và tính
+$$\underbrace{A' \equiv B^a \pmod{p}}_{\text{Alice tính}} \text{ và } \underbrace{B' \equiv A^b \pmod{p}}_{\text{Bob tính}}$$.
+
+Giá trị cả hai thu được, $A'$ và $B'$, là bằng nhau, vì:
+$$A' \equiv B^a \equiv (g^a)^b \equiv g^{ab} \equiv (g^b)^a \equiv A^b \equiv B' \pmod{p}.$$
+
+Giá trị này là khóa mà cả hai cùng chấp nhận sử dụng.
+% Thuật toán Trao đổi khoá Diffie - Hellman được tóm tắt ở bảng sau
+
+% \begin{tabular}{|c|c|}
+% 	\hline
+% 	\multicolumn{2}{Tạo tham số công khai}                                                                                                     \\
+% 	\hline
+% 	\multicolumn{2}{c}{Một bên chọn và công khai một số nguyên tố $p$ (lớn) và một số nguyên $g$ có bậc nguyên tố lớn trong $\mathbb{F}^*_p$}. \\
+% 	\hline
+% 	\hline
+% 	\multicolumn{2}{c}{Thực hiện tính toán bí mật}                                                                                             \\
+% 	Alice                         & Bob                                                                                                        \\
+% 	\hline
+% 	Chọn bí mật một số nguyên $a$ & Chọn bí mật một số nguyên $b$                                                                              \\
+% 	Tính $A \equiv g^a \pmod{p}$  & Tính $B \equiv g^b \pmod{p}$                                                                               \\
+% 	\hline
+% 	\hline
+% 	\multicolumn{2}{c}{Trao đổi giá trị công khai}                                                                                             \\
+% 	Alice gửi $A$ cho Bob         & $\longrightarrow A$                                                                                        \\
+% 	$B \longleftarrow$            & Bob gửi $B$ cho Alice                                                                                      \\
+% 	\hline
+% 	\hline
+% 	\multicolumn{2}{c}{Tiếp tục thực hiện tính toán bí mật}                                                                                    \\
+% 	Alice                         & Bob                                                                                                        \\
+% 	\hline
+% 	Tính $B^a \pmod{p}$           & Tính $A^b \pmod{p}$                                                                                        \\
+% 	Khóa bí mật của cả hai là giá trị $B^a \equiv (g^b)^a \equiv g^{ab} \equiv (g^a)^b \equiv A^b \pmod{p}$
+% \end{tabular}
+
+\begin{example}
+	Alice và Bob chọn số nguyên tố $p = 941$,và căn nguyên thủy $g = 627$.
+	Alice bí mật chọn $a= 347$ và tính được $A = 390 \equiv 627^{347} \pmod{941}$. Bob chọn $b= 781$, tính được $B = 691 \equiv 627^{781} \pmod{941}$. Alice và Bob trao đổi 2 số $A$ và $B$. Việc gửi của Alice và Bob được
+	thực hiện qua một kênh không an toàn, vì vậy hai giá trị $A = 390$ và $B = 691$
+	được coi là công khai. Các số $a = 347$ và $b = 781$ không được
+	truyền đi và được giữ bí mật. Sau đó, Alice và Bob đều có thể tính được số
+	$$ 470 \equiv 627 ^{347 \cdot 781} \equiv A^b \equiv B^a \pmod{941}.$$
+	Vậy $470$ là khóa bí mật được dùng chung.
+\end{example}
+Giả sử Eve đã nhìn thấy toàn bộ quá trình trao đổi khóa, Eve có thể tìm được khóa chung của Alice và Bob nếu cô ấy giải được một trong hai phương trình
+$$627^a \equiv 390 \pmod{941} \textit{ hoặc } 627^b \equiv 691 \pmod{941}.$$
+
+
+Tất nhiên, ví dụ của chúng tôi sử dụng các số quá nhỏ để đủ khả năng bảo
+mật cho Alice và Bob, vì máy tính của Eve cần rất ít thời gian để kiểm
+tra tất cả các luỹ thừa của $627$ modulo $941$.
+
+Như ta đã biết, đây là cách duy nhất để Eve tìm được khóa mà không cần trợ giúp của Alice và Bob. Nguyên tắc hiện tại đề xuất rằng
+Alice và Bob nên chọn một số nguyên tố $p$ có khoảng 1000 bit (tức là $p \approx 2^{1000}$) và
+một phần tử $g$ có bậc là số nguyên tố và xấp xỉ $\frac{p}{2}$. Khi đó, Eve sẽ phải đối mặt với một nhiệm vụ thực sự khó khăn.
+
+Eve biết giá trị của $A$ và $B$, cô ấy cũng biết $g$ và $p$.
+Vì vậy nếu Eve có thể giải được DLP, thì cô ấy
+có thể tìm được $a$ và $b$, sau đó có thể dễ dàng tính toán $g^{ab}$ và khóa bí mật
+chung của Alice và Bob. Alice và Bob vẫn an toàn với điều kiện là Eve
+không thể giải được DLP.
+
+\begin{definition}
+	Cho số nguyên tố $p$ và số nguyên $g$. \textit{Bài toán Diffie-Hellman} (DHP) là bài toán tìm giá trị của $g^{ab} \pmod{p}$ khi biết trước giá trị của $g^a \pmod{p}$ và $g^b \pmod{p}$.
+\end{definition}
+
+\subsection{Hệ mã hóa khóa công khai ElGamal}
+Mặc dù thuật toán trao đổi khóa Diffie-Hellman cung cấp một phương pháp
+chia sẻ công khai một khóa bí mật ngẫu nhiên, nhưng nó không đạt được mục
+tiêu đầy đủ là trở thành một hệ thống mật mã khóa công khai, vì một hệ thống
+mật mã cho phép trao đổi thông tin cụ thể, không chỉ là một chuỗi bit ngẫu
+nhiên.
+Hệ thống mật mã khóa công khai ElGamal là ví dụ đầu tiên của chúng tôi về
+hệ thống mật mã khóa công khai, nên chúng tôi sẽ giải thích một cách chậm rãi và chi tiết. Alice bắt đầu bằng cách công khai một khóa công khai và một thuật toán. Khóa công khai đơn giản chỉ là một số, thuật toán là phương pháp Bob sử dụng để mã hóa thông điệp của anh ấy sử dụng khóa công khai của Alice.
+Alice không tiết lộ khóa riêng tư của mình. Khóa riêng tư cho phép Alice, chỉ Alice, giải mã thông điệp đã được mã hóa bằng khóa công khai của cô ấy.
+
+
+Quá trình này áp dụng cho bất kỳ hệ thống mật mã khóa công khai nào. Đối với hệ mã hóa khóa công khai ElGamal, Alice cần một số nguyên tố $p$ lớn để bài toán Logarit rời rạc trong $\mathbb{F}^*_p$ trờ nên đủ khó,
+và cô ấy cần một phần từ $g$ có bậc (nguyên tố) lớn.  $p$ và $g$ có thể được chọn bởi Alice, hoặc được lựa chọn trước bởi một bên đáng tin cậy.
+
+Alice chọn một số $a$ và giữ nó bí mật, đóng vai trò như khóa riêng tư, và tính
+$$A \equiv g^a \pmod{p}$$
+Alice công khai số $A$ và giữ bí mật số $a$
+
+Bây giờ, giả sử Bob muốn mã hóa một thông điệp bằng khóa công khai của Alice. Ta sẽ giả định tin nhắn của Bob là một số nguyên $m$ và $2\leq m \leq p$.
+Để giải mã $m$, Bob chọn ngẫu nhiên một số $k$ modulo $p$.\footnote{Hầu hết các hệ mã hóa khóa công khai yêu cầu sử dụng các số ngẫu nhiên
+	để hoạt động an toàn. Việc tạo ra ngẫu nhiên hoặc tìm kiếm ngẫu nhiên các số nguyên thực sự là một quá trình tinh vi.
+	Chúng tôi thảo luận vấn đề tạo số ngẫu nhiên trong Phần 8.2, nhưng hiện tại chúng tôi bỏ qua vấn đề này và giả định rằng
+	Bob không gặp khó khăn gì khi tạo số ngẫu nhiên theo modulo $p$.} Bob dùng $k$ để mã hóa một, chỉ một, thông điệp, và anh ấy bỏ nó đi.
+Số  $k$ được gọi là \textit{khóa tạm thời}, vì $k$ chỉ tồn tại cho mục đích mã hóa một thông điệp.
+
+Bob lấy thông điệp $m$, khóa tạm thời $k$ đã được chọn, và khóa công khai $A$ của Alice để tính hai giá trị
+$$  c_1 \equiv g^k \pmod{p} \text{ và } c_2 \equiv mA^k \pmod{p}$$
+Mật mã của Bob, hay $m$ sau khi được mã hóa, là cặp số $(c_1, c_2)$, sau đó gửi cho Alice.
+
+Alice sẽ giải mã bằng cách nào? Vì Alice biết giá trị $a$, cô ấy có thể tính
+$$ x \equiv c_1^a \pmod{p},$$
+
+từ đó tính được $x^{-1} \pmod{p}$. Tiếp theo Alice nhân $c_2$ với $x^{-1}$, ngạc nhiên chưa, kết quả chính là thông điệp $m$.
+Để chúng tôi giải thích bằng cách phân tích giá trị của $x^{-1} \cdot c_2$.
+
+$$
+	\begin{array}{rclcl}
+		x^{-1} \cdot c_2 & \equiv & (c_1^a)^{-1} \cdot c_2         & \pmod{p}, & \text{vì } x \equiv c_1^a \pmod{p}                  \\
+		                 & \equiv & (g^{ak})^{-1} \cdot (mA^k)     & \pmod{p}, & \text{vì } c_1 \equiv g^k, c_2 \equiv mA^k \pmod{p} \\
+		                 & \equiv & (g^{ak})^{-1} \cdot (m(g^a)^k) & \pmod{p}, & \text{vì } A \equiv g^a \pmod{p}                    \\
+		                 & \equiv & m                              & \pmod{p}, & \text{triệt tiêu }  g^{ak}                          \\
+	\end{array}
+$$
+
+\begin{example}
+	Alive chọn số $p =467$, và $g = 2$. Cô ấy chọn $a = 153$ làm khoá bí mật và tính toán khoá công khai $A$ của cô ấy
+	$$ A = \equiv g^a \equiv 2^{153} \equiv 224 \pmod{467}$$
+	Bob muốn gửi cho Alice thông điệp $m = 331$. Anh ta chọn ngẫu nhiên một
+	khóa tạm thời, giả sử anh ta chọn $k = 197$, và tính hai đại lượng
+	$$ c_1 \equiv 2^{197} \equiv 87 \pmod{467} \ \text{ và } \ c_2 \equiv 331 \cdot 224^{197} \equiv 57 \pmod{467}.$$
+	Cặp $(c_1, c_2) = (87, 57)$ là mật mã mà Bob gửi cho Alice.
+	Alice biết $a = 153$, cô ấy tính
+	$$ x \equiv c_1^a \equiv 87^{153} \equiv 367 \pmod{467}, \ \text{sau đó } \ x^{-1} \equiv 14 \pmod{467}$$.
+	Cuối cùng, Alice tính
+	$$c_2x^{-1} \equiv 57 \cdot 14 \equiv 331 \pmod{467}$$
+	và nhận được giá trị chính là $m$.
+\end{example}
+Eve cần làm gì để giả mã thông điệp? Eve đã biết các giá trị công khai là $p$ và $g$, cô ấy cũng biết khóa công khai $A\equiv g^a$ của Alice.
+Nếu Eve có thể giải được bài toán Logarit rời rạc, cô ấy sẽ tìm được $a$ và giải mã được thông điệp. Còn không, Eve rất khó tìm được $m$.
+
+\subsection{Tổng quan về lý thuyết nhóm}
+\textcolor{red}{Phải có chữ}
+\begin{definition}
+	Cho nhóm $G$ và phần tử $a \in G$. Giả sử tồn tại số nguyên $d$ thỏa mãn $a^d = e$. Số $d$ nhỏ nhất được gọi là bậc của $a$. Nếu không có $d$ nào thỏa mãn, ta nói $a$ có bậc \textit{vô hạn}.
 \end{definition}
 \begin{proposition}
-	\label{pr:13}
-	Cho số nguyên $m \geq 1$.
-	\begin{itemize}
-		\item Nếu $a_1 \equiv a_2 \pmod{m}$ và $b_1 \equiv b_2 \pmod{m}$, thì
-		      $$a_1 \pm b_1 \equiv a_2 \pm b_2 \pmod{m} \quad \text{ và } \quad a_1 \cdot b_1 \equiv a_2 \cdot b_2 \pmod{m}$$.
-		\item Cho số nguyên $a$. Tồn tại nghịch đảo modulo $m$ của $a$ khi và chỉ khi $\gcd(a,m) = 1$
-	\end{itemize}
+	\label{pr:2.13}
+	Cho nhóm hữu hạn $G$. Thì mọi phần từ của $G$ đều có bậc hữu hạn. Hơn nữa, nếu $a \in G$ có bậc $d$ và $a^k=e$ thì $d \mid k$.
 \end{proposition}
+\begin{proof}
+
+\end{proof}
+
+\begin{proposition}
+	\label{pr:2.14}
+	Cho nhóm hữu hạn $G$ và phần tử $a \in G$. Bậc của $a$ là ước của bậc của $G$.
+	Cụ thể hơn, cho $n = \mid G \mid$ là bậc của $G$ và $d$ là bậc của $a$, hay $d$ là số nguyên dương nhỏ nhất thỏa mãn $a^d = e$. Thì
+	$$ a^n =e \quad \text{ và } \quad d \mid n$$
+\end{proposition}
+\begin{proof}
+
+\end{proof}
+
+\subsection{Bài toán logarit rời rạc khó đến mức nào?}
+\textcolor{red}{Phải có chữ}
+
+\subsection{Thuật toán xung đột của bài toán logarit rời rạc.}
+\textcolor{red}{Phải có chữ}
+
+Ờ phần này, chúng tôi sẽ miêu tả một thuật toán được phát triển bởi Shanks. Đây là một ví dụ về thuật toán va chạm.
+Những thuật toán kiểu này sẽ được thảo luận sâu hơn ở phần 4.4 và 4.5. Thuật toán của Shanks hoạt động trên mọi nhóm, không chỉ $\mathbb{F}_p^*$,
+và chứng minh thuật toán hoạt động cũng không khó khăn với các nhóm cụ thể, vì vậy chúng tôi phát biểu và đưa ra chứng minh tổng quát một cách cụ thể.
+
+\begin{proposition}[Ràng buộc cho DLP]
+	\label{pr:bound}
+	Cho nhóm $G$ và $g \in G$ là một phần từ có bậc $N$. (Nghĩa là $g^N = e$ và không có lũy thừa bậc nhỏ hơn của $g$ có giá trị bằng $e$).
+	Bài toán Logarit rời rạc
+	\begin{equation}
+		\label{eq:collision}
+		g^x =h
+	\end{equation}
+	có thể giải được trong $O(n)$ bước, trong đó mỗi bước là một lần nhân $g$.
+\end{proposition}
+
+
+\begin{remark}
+	Nếu ta đang làm việc trong $\mathbb{F}^*_p$, mỗi lần tính $g^x$ yêu cầu $O((\log p) ^k$ bước tính toán, trong đó hằng số $k$ phụ thuộc
+	vào máy tính và thuật toán được sử dụng cho phép nhân modulo. Nên tổng số bước máy tính tính toán, hay độ phức tạp thời gian, là $O(N (\log p)^k)$.
+	Nói chung, $O((\log p)^k)$ là không đáng kể, nên chúng tôi bỏ nó đi và coi thời gian chạy là $O(N)$.
+\end{remark}
+Ý tưởng của thuật toán va chạm là tạo hai danh sách và tìm một phần tử cùng xuất hiện ở cả hai danh sách. Đối với bài toán Logarit rời rạc được nhắc đền ở mệnh đề \ref{pr:bound},
+thời gian chạy của thuật toán va chạm nhỏ hơn $O(\sqrt{N})$ bước, tiết kiệm được rất nhiều so với $O(N)$ nếu $N$ lớn.
+
+
+\begin{proposition}[Thuật toán bước nhỏ-bước lớn của Shanks]
+	Cho nhóm $G$ và $g$ là phần tử của nhóm có bậc $N \geq 2$. Thuật toán sau giải được bài toán logarit rời rạc $g^x=h$ trong $O(\sqrt{N} \cdot \log N)$ bước.
+
+	\begin{enumerate}
+		\item Đặt $n = 1 + \sqrt{N}$, và rõ ràng $ n > \sqrt{N}$.
+		\item Tạo 2 danh sách,
+
+		      \begin{tabular}{rl}
+			      \centering
+			      List 1: & $e, g, g^2, g^3, \ldots , g^n$                                                   \\
+			      List 2: & $h, h \cdot g^{-n}, h \cdot g^{-2n}, h \cdot g^{-3n}, \ldots , h \cdot g^{-n^2}$
+		      \end{tabular}
+		\item Tìm một phần tử cùng xuất hiện ở cả hai danh sách, giả sử $g^i = hg^{-jn}.$
+		\item Vaf $x = i + jn$ là nghiệm của $g^x = h$
+	\end{enumerate}
+\end{proposition}
+
 \begin{proof}
 	\textcolor{red}{Chứng minh sau}
 \end{proof}
 
-\begin{definition}[Thặng dư bình phương]
-	Một số nguyên $q$ gọi là thặng dư bình phương theo modulo $m$ nếu nó đồng dư với một số chính phương theo modulo $m$.
-	Nói cách khác, tồn tại số nguyên $x$ thỏa mãn:
-	$$x^2 \equiv q (\mod{m})$$
-	Ngược lại, $q$ được gọi là \textit{phi thặng dư bình phương}
+\subsection{Định lý thặng dư Trung Hoa}
+Định lý thặng dư Trung Hoa mô tả các nghiệm của một hệ đồng dư tuyến tính.
+Đơn giản nhất là một hệ gồm hai đồng dư thức,
+\begin{equation}
+	\label{eq:dual}
+	x \equiv a \pmod{m} \quad \text{và} \quad x \equiv b \pmod{n}
+\end{equation}
+với $\gcd(m, n) = 1$,  định lý thặng dư Trung Hoa nói rằng có một nghiệm duy
+nhất modulo $mn$.
 
-\end{definition}
+Bài toán dạng này đầu tiên được ghi lại ở Trung Quốc vào khoảng thế kỷ III. Nó thực ra là một hệ gồm ba đồng dư thức.
+\begin{quotation}
+	``Chúng tôi có một số đồ vật, nhưng không rõ số lượng là bao nhiêu.
+	Nếu đếm 3 cái một lần, sẽ thừa ra 2.
+	Nếu đếm 5 cái một lần, sẽ thừa ra 3.
+	Nếu đếm 7 cái một lần, sẽ thừa ra 2.
+	Vậy chúng có tất cả bao nhiêu cái?''
+\end{quotation}
 
-\begin{definition}[Modular square root]
-	Một Modular square root $r$ của số nguyên $a$ theo modulo $m$ là một số nguyên thỏa mãn:
-	$$r^2 \equiv a (\mod{m})$$
-\end{definition}
-
-Xét $F_p$ là một trường hữu hạn (hữu hạn số phần tử nguyên dương):
-$$F_p = \{0, 1, 2, \ldots p-1\}$$
-Với $p$ là một số nguyên tố. $F_p$ giống như cách viết $Z/mZ$ là vành các số nguyên modulo $m$.
-\subsection{Đường cong elliptic trên trường hữu hạn}
-
-Ta định nghĩa một đường cong elliptic $E$ trên trường hữu hạn $\mathbb{F}_q$ là một phương trình có dạng:
-$$E: Y^2 = X^3 + AX + B\ \text{với các hằng số}\ A, B \in F_p\ \text{thỏa mãn}\ 4A^3 + 27B^2 \neq 0$$
-
-
-Tập hợp các điểm trên $E$ có toạ độ thuộc $\mathbb{F} _p$ được kí hiệu bởi
-$$E(F_p) = \{(x, y) : x, y \in \mathbb{F}_p\ \text{thỏa mãn}\ y^2 = x^3 + A x + B\} \cup \mathcal{O}$$
-
-\begin{remark}
-	Vì một vài lí do mà chúng tôi sẽ giải thích ở phần sau, ở đây, chúng tôi thêm điều kiện $p \geq 3$.
-	Những đường cong Elliptic trên trường $\mathbb{F}_2$ có vai trò quan trọng trong mật mã, nhưng chúng rất phức tạp, nên chúng ta sẽ thảo luận về chúng ở phần 7.
-\end{remark}
+Đinh lý thặng dư Trung Hoa có rất nhiều ứng dụng trong lý thuyết số và các lĩnh vực khác của Toán học. Ở phần 2.9, ta sẽ thảo luận về việc định lý được sử dụng như thế nào khi giải một bài toán logarit rời rạc cụ thể.
+Trước hết, ta bắt đầu bằng ví dụ về những hệ hai đồng dư thức. Phương pháp mà chúng tôi mô tả thực sự là một thuật toán cho phép chúng tôi tìm ra nghiệm.
 
 \begin{example}
-	\label{ex:ex4}
-	Xem xét đường cong elliptic
-	$$E: Y^2 = X^3 + 3X + 8 \ \ \ \ \text{trên trường}\  F_{13}\ $$
+	Tìm $x$ thỏa mãn
+	\begin{equation}
+		\label{eq:exdual}
+		x \equiv 1 \pmod{5} \quad \text{và} \quad x \equiv 9 \pmod{11}
+	\end{equation}
+	Vì $x \equiv 1 \pmod{5}$, nên nếu tồn tại nghiệm $x$ thì $x$ phải có dạng
+	\begin{equation}
+		\label{eq:exdual2}
+		x = 1 + 5y, \quad y \in \mathbb{Z}.
+	\end{equation}
+	Thay \eqref{eq:exdual2} vào \eqref{eq:exdual} ta được
+	\begin{equation}
+		\label{eq:exdual3}
+		1 + 5y \equiv 9 \pmod{11}, \quad \text{hay} 5y \equiv 8 \pmod{11}.
+	\end{equation}
+	Ta tìm $y$ bằng cách nhân 2 vế của \eqref{eq:exdual3} với nghịch đảo modulo $11$ của $5$. Con số này tồn tại vì $\gcd (5,11) = 1$, ta đã cách tìm nghịch đảo modulo ở \ref{pr:13}.
+	Tuy nhiên, đối với trường hợp này, số nhỏ nên ta dê dàng tìm được $5\cdot 9 \equiv 1 \pmod{11}$.
+	Nhân cả 2 vế của \eqref{eq:exdual3} với $9$ ta được:
+	\begin{equation}
+		\label{eq:exdual4}
+		y \equiv 9 \cdot 8 \equiv 72 \equiv 6 \pmod{11}
+	\end{equation}
+	thay giá trị của $y$ vào \eqref{eq:exdual2} để có nghiệm
+	$$ x = 1+ 5\cdot 6 = 31$$
+	là nghiệm của hệ.
 \end{example}
 
-Ta tìm các điểm thuộc $E(\mathbb{F}_{13})$ bằng cách thay tất cả giá trị của $X = 0,1,2,\ldots,12$ và kiểm tra với mỗi giá trị của $X$, $X^3 + 3X + 8$ có là bình phương modulo của 13 hay không.
-Ví dụ, thay $X = 0$, ta có $X^3+3X+8 = 8$ và 8 không phải bình phương modulo của 13.
-Tiếp theo, thay $X = 1$, ta được $X^3+3X+8 = 12$ và 12 là bình phương modulo của 13. Nó có 2 nghiệm
-$$5^2 \equiv 12 (\mod{13}) \ \ \ \ \text{và} \ \ \ \ 8^2 \equiv 12 (\mod 13)$$.
-
-Ta tìm được 2 điểm $(1,5)$ và $(1,8)$ thuộc $E(\mathbb{F}_{13})$. Tiếp tục theo cách này, ta kết thúc với tập hoàn chỉnh gồm 9 điểm:
-$$E(\mathbb{F}_{13}) = \{ \mathcal{O}, (1,5), (1,8), (2,3), (2,10), (9,6), (9,7), (12,2), (12,11)\}.$$
-
-Cho $P_1 = (x_1, y_1)$ và $P_2 = (x_2, y_2)$ thuộc $E(\mathbb{F}_{p})$. Ta định nghĩa tổng $P_1+P_2$ có tọa độ $(x_3, y_3)$ thu được bằng cách áp dụng thuật toán cộng (\ref{th:th2}).
-Vì tọa độ các độ các điểm đó nằm trong trường $\mathbb{F}_p$, ta thu được $(x_3, y_3)$ có tọa độ trong trường $\mathbb{F}_p$. Nhưng điều này vẫn chưa đủ chỉ ra
-$(x_3, y_3)$ có thể thuộc $E(\mathbb{F}_{p})$ hay không.
-
-\begin{theorem}
-	\label{th:th3}
-	Cho $E$ là đường cong elliptic trên $\mathbb{F}_p$ và $P$ và $Q$ là 2 điểm thuộc $E(\mathbb{F}_{p})$.
-	\begin{itemize}
-		\item Thuật toán cộng đường cong elliptic áp dụng cho $P$ và $Q$ (\ref{th:th2}) đưa ra một điểm trong $E(\mathbb{F}_{p})$.
-		      Điểm này được kí hiệu bởi $P + Q$.
-		\item Luật cộng trên $E(\mathbb{F}_{p})$ thỏa mãn tất cả các tính chất được liệt kê ở định lý \ref{th:th1}.
-		      Nói cách khác, luật cộng này làm cho $E(\mathbb{F}_{p})$ thành nhóm hữu hạn.
-	\end{itemize}
+\begin{theorem}[Định lý thặng dư Trung hoa]
+	Cho tập số nguyên $m_1, m_2, \ldots, m_k$ đôi một nguyên tố cùng nhau. Nghĩa là $\gcd (m_i, m_j) = 1 \forall i \neq j$.
+	Và tập $a_1, a_2, \ldots, a_k$ là các số nguyên tùy ý. Thì hệ đồng dư thức
+	\begin{equation}
+		x \equiv a_1 \pmod{m_1}, \quad \quad x \equiv a_2 \pmod{m_2}, \quad \ldots, \quad x \equiv a_k \pmod{m_k}.
+	\end{equation}
+	có duy nhất nghiệm $x=c$
 \end{theorem}
-
 \begin{proof}
-
+	\textcolor{red}{Chứng minh sau}
 \end{proof}
 
 \begin{example}
-	\label{ex:ex5}
-	Tiếp tục với đường cong $E$ từ ví dụ \ref{ex:ex4}
-	$$ E: Y^2 = X^3 + 3X + 8 \ \ \ \ \text{trên trường}\  \mathbb{F}_{13} $$
-\end{example}
-Áp dụng thuật toán cộng (\ref{th:th2}) để cộng $P(9,7)$ và $Q(1,8)$, trước hết, ta tính hệ số góc của $L$:
-$$\lambda  =\frac{y_2-y_1}{x_2-x_1} = \frac{8-7}{1-9} = \frac{1}{-8} = \frac{1}{5} = 8$$
-
-vì các tính toán \footnote{Đây là lúc thích hợp để hiểu rằng, $\frac{1}{5}$ chỉ là \textit{kí hiệu} cho một nghiệm của phương trình $5x=1$.
-	Để gán một giá trị cho $\frac{1}{5}$, bạn phải biết giá trị đang ở trường nào. Trong trường $\mathbb{Q}$, giá trị của $\frac{1}{5}$ là một số bình thường,
-	nhưng ở trường $\mathbb{F}_{13}$ giá trị của $\frac{1}{5}$ là $8$ ($\frac{1}{5} = 5^{-1}$ và nghịch đảo modulo $13$ của $5$ là $8$ ).} đang được thực hiện trên trường $\mathbb{F}_{13}$ nên $-8 = 5$ và $\frac{1}{5} = 5^{-1} = 8$.
-Tiếp tục, ta tính
-$$\nu = y_1 - \lambda x_1 = 7 - 8 \centerdot 9 = -65 = 0.$$
-Cuối cùng:
-$$
-	\begin{array}{rcl}
-		x_3 & = & \lambda^2 - x_1 - x_2 = 64 -9 -1 = 54 = 2,         \\
-		y_3 & = & -(\lambda x_3 + \nu) = -8 \centerdot 2 = -16 = 10.
-	\end{array}
-$$
-Và ta hoàn thành việc tính toán
-$$P+Q = (1,8) + (9,7) = (2,10) \in E(\mathbb{F}_{13})$$
-
-Tương tự, ta dùng thuật toán cộng để cộng điểm $P = (9,7)$ với chính nó. Lưu ý ta vẫn đang thực hiện tính toán trên trường $\mathbb{F}_{13}$, ta có:
-
-$$
-	\begin{array}{rcl}
-		\lambda & = & \frac{3x_1^2+A}{2y_1} = \frac{3\centerdot 9^ 2 + 3}{2 \centerdot 7} = \frac{246}{14} = 1 \\
-		\nu     & = & y_1-\lambda x_1 = 7 - 1 \centerdot 9 = 11 .
-	\end{array}
-$$
-
-sau đó
-$$
-	\begin{array}{rcl}
-		x_3 & = & \lambda^2 - x_1 - x_2 = 1 - 9 - 9 = 9          \\
-		y_3 & = & -(\lambda x_3 + \nu) = -1 \centerdot 9 -11 =6.
-	\end{array}
-$$
-
-nên $P+P = (9,7) + (9,7) = (9,6) \in E(\mathbb{F}_{13})$. Theo cách đó, ta có thể cộng mọi cặp điểm trong $E(\mathbb{F}_{13})$, kết quả được thể hiện ở \hyperref[fg:tb1]{Bảng 1}
-
-
-\begin{figure}[H]
-	\label{fg:tb1}
-	\caption{Phép cộng $E: Y^2 = X^3 + 3X + *$ trên trường $\mathbb{F}_{13}$}
-	$
-		\begin{array}{|c||c|c|c|c|c|c|c|c|c|}
-			\hline
-			            & \mathcal{O} & (1,5)       & (1,8)       & (2,3)   & (2,10)      & (9,6)       & (9,7)       & (12,2)      & (12,11)     \\
-			\hline
-			\hline
-			\mathcal{O} & \mathcal{O} & (1,5)       & (1,8)       & (2,3)   & (2,10)      & (9,6)       & (9,7)       & (12,2)      & (12,11)     \\
-			\hline
-			(1,5)       & (1,5)       & (2,10)      & \mathcal{O} & (1,8)   & (9,7)       & (2,3)       & (12,2)      & (12,11)     & (9,6)       \\
-			\hline
-			(1,8)       & (1,8)       & \mathcal{O} & (2,3)       & (9,6)   & (1,5)       & (12,11)     & (2,10)      & (9,7)       & (12,2)      \\
-			\hline
-			(2,3)       & (2,3)       & (1,8)       & (9,6)       & (12,11) & \mathcal{O} & (12,2)      & (1,5)       & (2,10)      & (9,7)       \\
-			\hline
-			(9,6)       & (9,6)       & (2,3)       & (12,11)     & (12,2)  & (1,8)       & (9,7)       & \mathcal{O} & (1,5)       & (2,10)      \\
-			\hline
-			(9,7)       & (9,7)       & (12,2)      & (2,10)      & (1,5)   & (12,11)     & \mathcal{O} & (9,6)       & (2,3)       & (1,8)       \\
-			\hline
-			(12,2)      & (12,2)      & (12,11)     & (9,7)       & (2,10)  & (9,6)       & (1,5)       & (2,3)       & (1,8)       & \mathcal{O} \\
-			\hline
-			(12,11)     & (12,11)     & (9,6)       & (12,2)      & (9,7)   & (2,3)       & (2,10)      & (1,8)       & \mathcal{O} & (1,5)       \\
-			\hline
-		\end{array}
-	$
-\end{figure}
-
-
-Tập điểm trong $E(\mathbb{F}_{p})$ là tập hữu hạn. Chính xác hơn, có  $p$ cách chọn $X$ và mỗi cách chọn $X$, phương trình
-$$Y^2 = X^3 + AX + B$$
-cho nhiều nhất 2 nghiệm $Y$. Thêm điểm $\mathcal{O}$, $\#E(\mathbb{F}_{p})$ có tối đa $2p+1$ điểm.
-
-Khi gán giá trị cho $X$, có ba trường hợp xảy ra với đại lượng
-$$X^3 + AX + B$$
-
-Thứ nhất, nó là thặng dư bình phương và có hai Modular square root, ta được hai điểm thuộc $E(\mathbb{F}_{p})$, trường hợp này xảy ra khoảng 50\%.
-Thứ hai, nó không là thặng dư bình phương, ta bỏ qua $X$, trường hợp này cũng chiếm khoảng 50\%.
-Thứ ba, $X^3 + AX + B = 0$, ta được một điểm thuộc $E(\mathbb{F}_{p})$, trường hợp này rất hiếm xảy ra \footnote{Phép đồng dư $X^3 + AX + B \equiv 0 (\mod p)$ có nhiều nhất ba nghiệm, và nếu $p$ lớn, tỉ lệ chọn ngẫu nhiên một trong số chúng là rất nhỏ.}.
-Theo đó, số phần tử của $E(\mathbb{F}_{p})$ xấp xỉ
-$$ \#E(\mathbb{F}_{p}) \approx 50\% \centerdot (2p + 1) = p + 1.$$
-
-Một định lý nổi tiếng của Hasse, sau này được Weil và Deligne tổng quát hóa rộng rãi,
-nói rằng điều này đúng với các dao động ngẫu nhiên
-
-\begin{theorem}[Hasse]
-	\label{th:th4}
-	Cho $E$ là đường cong elliptic trên trường $F_{p}$. Thì
-	$$ \#E(\mathbb{F}_{p}) = p + 1  -t_p \  \text{với $t_p$ thỏa mãn} \ \ |t_p| \leq 2\sqrt{p}.$$
-\end{theorem}
-
-\begin{definition}
-	Đại lượng $t_p = p+1 - \#E(\mathbb{F}_p)$ ở định lý \ref{th:th4} được gọi là \textit{dấu vết của Frobenius} trên $E/\mathbb{F}_p$.
-\end{definition}
-$t_p$ xuất hiện dưới dạng dấu vết của một ma trận 2x2 có vai trò như phép biến đổi tuyến tính trên một không gian vector 2 chiều liên kết với  $E/\mathbb{F}_p$.
-
-\begin{example}
-	\label{ex:ex6}
-	Cho phương trình $E$:
-	$$E: Y^2 = X^3 + 4X + 6$$
+	Tìm $x$ là nghiệm của hệ gồm 3 đồng dư thức:
+	\begin{equation}
+		x \equiv 2 \pmod{3}, \quad \quad x \equiv 3 \pmod{7}, \quad \text{ và } \quad x \equiv 4 \pmod{16}.
+	\end{equation}
+	Theo định lý thặng dư Trung hoa, chỉ có duy nhất 1 nghiệm theo modulo $336 (336 = 3 \cdot 7 \cdot 16)$.
+	Ta bắt đầu với nghiệm $x=2 +3y $ từ đồng dư thức thứ nhất. Thay vào đồng dư thức thứ hai:
+	$$2 + 3y \equiv 3 \pmod{7} \quad \text{ hay } \quad 3y \equiv 1 \pmod{7}$$
+	Nhân cả 2 vế với $5$ (vì $5$ là nghịch đảo modulo $7$ của $3$) ta được $y \equiv 5 \pmod{7}$. Ta thu được $x$
+	$$ x \equiv 2 + 3y = 2 + 3 \cdot 5 = 17$$
+	là nghiệm của hai đồng dư thức đầu tiên.
+	Nghiệm tổng quát của hai đồng dư thức đầu tiên là $x=17 + 21z$. Thay vào đồng dư thức cuối:
+	$$ 17 + 21z \equiv 4 \pmod{16} \quad \text{ hay } \quad 5z \equiv 3 \pmod{16}$$
+	Nhân cả hai vế với $13$.
+	$$ z \equiv 3 \cdot 13 \equiv 39 \equiv 7 \pmod{16}$$.
+	Cuối cùng
+	$$ x = 17 + 21 \cdot 7 = 164$$
+	Tất cả các nghiệm khác đều thu được bằng cách thêm bớt một bội của $336$.
 \end{example}
 
-Chúng ta có thể coi $E$ là đường cong elliptic trên trường $F_{p}$ cho các trường hữu hạn $\mathbb{F}_{p}$ khác nhau và đếm số điểm thuộc $E(\mathbb{F}_p).$
-\hyperref[fg:tb2]{Bảng 2} liệt kê các kết quả với những số nguyên tố đầu tiên, cùng giá trị của $t_p$ để so sánh với giá trị của $2\sqrt{p}$.
-
-\begin{figure}[H]
-	\label{fg:tb2}
-	\caption{Số điểm và dấu vết Frobenius của $E:Y^2 = X^3 + 4X + 6$}
-	$$
-		\begin{array}{|c|c|c|c|}
-			\hline
-			p  & \#E(\mathbb{F}_p) & t_p & 2\sqrt{p} \\
-			\hline
-			\hline
-			3  & 4                 & 0   & 3.46      \\
-			\hline
-			5  & 8                 & -2  & 4.47      \\
-			\hline
-			7  & 11                & -3  & 5.29      \\
-			\hline
-			11 & 16                & -4  & 6.63      \\
-			\hline
-			13 & 14                & 0   & 7.21      \\
-			\hline
-			17 & 15                & 3   & 8.25      \\
-			\hline
-		\end{array}
-	$$
-\end{figure}
-
-\begin{remark}
-	Định lý \hyperref[th:th4]{Hasse} cho ta một giới hạn của $\#E(\mathbb{F}_p)$, nhưng không cung cấp một phương pháp để tính giá trị này.
-	Về nguyên tắc, để tìm $\#E(\mathbb{F}_p)$, ta có thể thay từng giá trị của $X$ rồi kiểm tra giá trị của $X^3 + AX + B$ dựa vào bảng thặng dư bình phương $p$, nhưng độ phức tạp thời gian là $O(p)$, rất kém hiệu quả.
-	Schoof \cite{schoof1985elliptic} đã tìm ra một phương pháp tốt hơn để tính $\#E(\mathbb{F}_p)$ trong thời gian $O(\log^6(p))$.
-	Nghĩa là ông ấy tìm được một thuật toán có thời gian đa thức. Thuật toán của Schoof được cải thiện bởi Elkies và Atkin, với tên gọi là \textit{thuật toán SEA} \cite{schoof1995counting}.
-\end{remark}
