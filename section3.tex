@@ -70,6 +70,7 @@ $$ \mathbb{F}^*_p = \{1, g, g^2, g^3, \ldots, g^{p-2} \}$$
 \end{remark}
 
 \begin{remark}
+	\label{rm:2.2}
 	Bài toán logarit rời rạc là bài toán tìm $x$ sao cho $g^x \equiv h$. Tuy nhiên nếu
 	có một nghiệm thì sẽ có vô số nghiệm, vì theo định lý nhỏ của Fermat $g^{p-1} \equiv 1(mod p)$. Do đó nếu $x$ là nghiệm thì $x + k(p-1)$ cũng là nghiệm với mọi giá trị $k$, vì
 	$$ g^{x + k(p-1)} \equiv g^x \cdot (g^{p-1})^k \equiv h  \cdot 1^k \equiv h \pmod{p} $$
@@ -360,6 +361,163 @@ $$
 \end{example}
 Eve cần làm gì để giả mã thông điệp? Eve đã biết các giá trị công khai là $p$ và $g$, cô ấy cũng biết khóa công khai $A\equiv g^a$ của Alice.
 Nếu Eve có thể giải được bài toán Logarit rời rạc, cô ấy sẽ tìm được $a$ và giải mã được thông điệp. Còn không, Eve rất khó tìm được $m$.
+
+\subsection{Tổng quan về lý thuyết nhóm}
+\textcolor{red}{Phải có chữ}
+\begin{definition}
+	Cho nhóm $G$ và phần tử $a \in G$. Giả sử tồn tại số nguyên $d$ thỏa mãn $a^d = e$. Số $d$ nhỏ nhất được gọi là bậc của $a$. Nếu không có $d$ nào thỏa mãn, ta nói $a$ có bậc \textit{vô hạn}.
+\end{definition}
+\begin{proposition}
+	\label{pr:2.13}
+	Cho nhóm hữu hạn $G$. Thì mọi phần từ của $G$ đều có bậc hữu hạn. Hơn nữa, nếu $a \in G$ có bậc $d$ và $a^k=e$ thì $d \mid k$.
+\end{proposition}
+\begin{proof}
+
+\end{proof}
+
+\begin{proposition}
+	\label{pr:2.14}
+	Cho nhóm hữu hạn $G$ và phần tử $a \in G$. Bậc của $a$ là ước của bậc của $G$.
+	Cụ thể hơn, cho $n = \mid G \mid$ là bậc của $G$ và $d$ là bậc của $a$, hay $d$ là số nguyên dương nhỏ nhất thỏa mãn $a^d = e$. Thì
+	$$ a^n =e \quad \text{ và } \quad d \mid n$$
+\end{proposition}
+\begin{proof}
+
+\end{proof}
+
+\subsection{Bài toán logarit rời rạc khó đến mức nào?}
+\textcolor{red}{Phải có chữ}
+
+\subsection{Thuật toán xung đột của bài toán logarit rời rạc.}
+\textcolor{red}{Phải có chữ}
+
+Ờ phần này, chúng tôi sẽ miêu tả một thuật toán được phát triển bởi Shanks. Đây là một ví dụ về thuật toán va chạm.
+Những thuật toán kiểu này sẽ được thảo luận sâu hơn ở phần 4.4 và 4.5. Thuật toán của Shanks hoạt động trên mọi nhóm, không chỉ $\mathbb{F}_p^*$,
+và chứng minh thuật toán hoạt động cũng không khó khăn với các nhóm cụ thể, vì vậy chúng tôi phát biểu và đưa ra chứng minh tổng quát một cách cụ thể.
+
+\begin{proposition}[Ràng buộc cho DLP]
+	\label{pr:bound}
+	Cho nhóm $G$ và $g \in G$ là một phần từ có bậc $N$. (Nghĩa là $g^N = e$ và không có lũy thừa bậc nhỏ hơn của $g$ có giá trị bằng $e$).
+	Bài toán Logarit rời rạc
+	\begin{equation}
+		\label{eq:collision}
+		g^x =h
+	\end{equation}
+	có thể giải được trong $O(n)$ bước, trong đó mỗi bước là một lần nhân $g$.
+\end{proposition}
+
+
+\begin{remark}
+	Nếu ta đang làm việc trong $\mathbb{F}^*_p$, mỗi lần tính $g^x$ yêu cầu $O((\log p) ^k$ bước tính toán, trong đó hằng số $k$ phụ thuộc
+	vào máy tính và thuật toán được sử dụng cho phép nhân modulo. Nên tổng số bước máy tính tính toán, hay độ phức tạp thời gian, là $O(N (\log p)^k)$.
+	Nói chung, $O((\log p)^k)$ là không đáng kể, nên chúng tôi bỏ nó đi và coi thời gian chạy là $O(N)$.
+\end{remark}
+Ý tưởng của thuật toán va chạm là tạo hai danh sách và tìm một phần tử cùng xuất hiện ở cả hai danh sách. Đối với bài toán Logarit rời rạc được nhắc đền ở mệnh đề \ref{pr:bound},
+thời gian chạy của thuật toán va chạm nhỏ hơn $O(\sqrt{N})$ bước, tiết kiệm được rất nhiều so với $O(N)$ nếu $N$ lớn.
+
+
+\begin{proposition}[Thuật toán bước nhỏ-bước lớn của Shanks]
+	Cho nhóm $G$ và $g$ là phần tử của nhóm có bậc $N \geq 2$. Thuật toán sau giải được bài toán logarit rời rạc $g^x=h$ trong $O(\sqrt{N} \cdot \log N)$ bước.
+
+	\begin{enumerate}
+		\item Đặt $n = 1 + \sqrt{N}$, và rõ ràng $ n > \sqrt{N}$.
+		\item Tạo 2 danh sách,
+
+		      \begin{tabular}{rl}
+			      \centering
+			      List 1: & $e, g, g^2, g^3, \ldots , g^n$                                                   \\
+			      List 2: & $h, h \cdot g^{-n}, h \cdot g^{-2n}, h \cdot g^{-3n}, \ldots , h \cdot g^{-n^2}$
+		      \end{tabular}
+		\item Tìm một phần tử cùng xuất hiện ở cả hai danh sách, giả sử $g^i = hg^{-jn}.$
+		\item Vaf $x = i + jn$ là nghiệm của $g^x = h$
+	\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+	\textcolor{red}{Chứng minh sau}
+\end{proof}
+
+\subsection{Định lý thặng dư Trung Hoa}
+Định lý thặng dư Trung Hoa mô tả các nghiệm của một hệ đồng dư tuyến tính.
+Đơn giản nhất là một hệ gồm hai đồng dư thức,
+\begin{equation}
+	\label{eq:dual}
+	x \equiv a \pmod{m} \quad \text{và} \quad x \equiv b \pmod{n}
+\end{equation}
+với $\gcd(m, n) = 1$,  định lý thặng dư Trung Hoa nói rằng có một nghiệm duy
+nhất modulo $mn$.
+
+Bài toán dạng này đầu tiên được ghi lại ở Trung Quốc vào khoảng thế kỷ III. Nó thực ra là một hệ gồm ba đồng dư thức.
+\begin{quotation}
+	``Chúng tôi có một số đồ vật, nhưng không rõ số lượng là bao nhiêu.
+	Nếu đếm 3 cái một lần, sẽ thừa ra 2.
+	Nếu đếm 5 cái một lần, sẽ thừa ra 3.
+	Nếu đếm 7 cái một lần, sẽ thừa ra 2.
+	Vậy chúng có tất cả bao nhiêu cái?''
+\end{quotation}
+
+Đinh lý thặng dư Trung Hoa có rất nhiều ứng dụng trong lý thuyết số và các lĩnh vực khác của Toán học. Ở phần 2.9, ta sẽ thảo luận về việc định lý được sử dụng như thế nào khi giải một bài toán logarit rời rạc cụ thể.
+Trước hết, ta bắt đầu bằng ví dụ về những hệ hai đồng dư thức. Phương pháp mà chúng tôi mô tả thực sự là một thuật toán cho phép chúng tôi tìm ra nghiệm.
+
+\begin{example}
+	Tìm $x$ thỏa mãn
+	\begin{equation}
+		\label{eq:exdual}
+		x \equiv 1 \pmod{5} \quad \text{và} \quad x \equiv 9 \pmod{11}
+	\end{equation}
+	Vì $x \equiv 1 \pmod{5}$, nên nếu tồn tại nghiệm $x$ thì $x$ phải có dạng
+	\begin{equation}
+		\label{eq:exdual2}
+		x = 1 + 5y, \quad y \in \mathbb{Z}.
+	\end{equation}
+	Thay \eqref{eq:exdual2} vào \eqref{eq:exdual} ta được
+	\begin{equation}
+		\label{eq:exdual3}
+		1 + 5y \equiv 9 \pmod{11}, \quad \text{hay} 5y \equiv 8 \pmod{11}.
+	\end{equation}
+	Ta tìm $y$ bằng cách nhân 2 vế của \eqref{eq:exdual3} với nghịch đảo modulo $11$ của $5$. Con số này tồn tại vì $\gcd (5,11) = 1$, ta đã cách tìm nghịch đảo modulo ở \ref{pr:13}.
+	Tuy nhiên, đối với trường hợp này, số nhỏ nên ta dê dàng tìm được $5\cdot 9 \equiv 1 \pmod{11}$.
+	Nhân cả 2 vế của \eqref{eq:exdual3} với $9$ ta được:
+	\begin{equation}
+		\label{eq:exdual4}
+		y \equiv 9 \cdot 8 \equiv 72 \equiv 6 \pmod{11}
+	\end{equation}
+	thay giá trị của $y$ vào \eqref{eq:exdual2} để có nghiệm
+	$$ x = 1+ 5\cdot 6 = 31$$
+	là nghiệm của hệ.
+\end{example}
+
+\begin{theorem}[Định lý thặng dư Trung hoa]
+	Cho tập số nguyên $m_1, m_2, \ldots, m_k$ đôi một nguyên tố cùng nhau. Nghĩa là $\gcd (m_i, m_j) = 1 \forall i \neq j$.
+	Và tập $a_1, a_2, \ldots, a_k$ là các số nguyên tùy ý. Thì hệ đồng dư thức
+	\begin{equation}
+		x \equiv a_1 \pmod{m_1}, \quad \quad x \equiv a_2 \pmod{m_2}, \quad \ldots, \quad x \equiv a_k \pmod{m_k}.
+	\end{equation}
+	có duy nhất nghiệm $x=c$
+\end{theorem}
+\begin{proof}
+	\textcolor{red}{Chứng minh sau}
+\end{proof}
+
+\begin{example}
+	Tìm $x$ là nghiệm của hệ gồm 3 đồng dư thức:
+	\begin{equation}
+		x \equiv 2 \pmod{3}, \quad \quad x \equiv 3 \pmod{7}, \quad \text{ và } \quad x \equiv 4 \pmod{16}.
+	\end{equation}
+	Theo định lý thặng dư Trung hoa, chỉ có duy nhất 1 nghiệm theo modulo $336 (336 = 3 \cdot 7 \cdot 16)$.
+	Ta bắt đầu với nghiệm $x=2 +3y $ từ đồng dư thức thứ nhất. Thay vào đồng dư thức thứ hai:
+	$$2 + 3y \equiv 3 \pmod{7} \quad \text{ hay } \quad 3y \equiv 1 \pmod{7}$$
+	Nhân cả 2 vế với $5$ (vì $5$ là nghịch đảo modulo $7$ của $3$) ta được $y \equiv 5 \pmod{7}$. Ta thu được $x$
+	$$ x \equiv 2 + 3y = 2 + 3 \cdot 5 = 17$$
+	là nghiệm của hai đồng dư thức đầu tiên.
+	Nghiệm tổng quát của hai đồng dư thức đầu tiên là $x=17 + 21z$. Thay vào đồng dư thức cuối:
+	$$ 17 + 21z \equiv 4 \pmod{16} \quad \text{ hay } \quad 5z \equiv 3 \pmod{16}$$
+	Nhân cả hai vế với $13$.
+	$$ z \equiv 3 \cdot 13 \equiv 39 \equiv 7 \pmod{16}$$.
+	Cuối cùng
+	$$ x = 17 + 21 \cdot 7 = 164$$
+	Tất cả các nghiệm khác đều thu được bằng cách thêm bớt một bội của $336$.
+\end{example}
 \subsection{Bài toán Logarit rời rạc đường cong elliptic}
 Ở phần trước, ta đã thảo luận về bài toán Logarit rời rạc (DLP) trên trường hữu hạn $\mathbb{F}^*_p$.
 Để tạo ra một hệ mã hóa dựa trên DLP cho $\mathbb{F}^*_p$, Alice công khai 2 số $g$ và $h$, cô ấy giữ bí mật một số mũ $x$ là nghiệm của phương trình
@@ -381,3 +539,22 @@ Eve cần tìm ra phải cộng $P$ bao nhiêu lần để được $Q$. Phép c
 	$$  n = \log_P(Q)$$
 	và ta gọi $n$ là \textit{Logarit rời rạc elliptic} của $Q$ đối với $P$.
 \end{definition}
+
+\begin{remark}
+	Định nghĩa $\log_p(Q)$ của chúng tôi không hẳn chính xác. Thứ nhất là đôi khi có một cặp điểm $P$ và $Q$ thuộc $E(\mathbb{F}_p)$ mà $Q$ không phải bội của $P$.
+	Trong trường hợp đó thì $\log_p(Q)$  không tồn tại. Tuy nhiên, với mục đích mã hóa, Alice bắt đầu với một điểm công khai $P$ và một số bí mật $n$. Cô ấy thực hiện tính toán và công khai điểm $Q = nP$.
+	Vậy trong các ứng dụng thực tế, $\log_p(Q)$ tồn tại và là khóa bí mật của Alice.
+
+	Thứ hai là nếu có một giá trị $n_0$ thỏa mãn $Q=n_0P$ thì cũng tồn tại nhiều giá trị như vậy. Để chứng minh, trước hết lưu ý tồn tại một số nguyên dương $s$ thỏa mãn $sP = \mathcal{O}$. Dựa vào \ref{pr:2.13} có thể dễ dàng chứng minh.
+	Vì $E(\mathbb{F}_p)$ là hữu hạn, các điểm $P, 2P, 3P, 4P, \ldots$ không thể tất cả đều khác nhau. Nên tồn tại $k > j$ thỏa mãn $kP = jP$, ta lấy $s = k-j$.
+	Số $s \geq 1$ nhỏ nhất thỏa mãn $sP = \mathcal{O}$ được gọi là bậc của $P$. (Mệnh đề \ref{pr:2.14} cho ta biết bậc của $P$ là ước của $\#E(\mathbb{F}_p))$.
+	Nếu $s$ là bậc của $P$ và $Q = nP$, ta có:
+	$$ Q = n_0P = n_0P + i\mathcal{O} = n_0P + isP = (n_0+is)P \ \  (i\in \mathbb{Z})$$
+	Nghiệm $n$ của phương trình $Q = nP$ là các số nguyên dạng $ n = n_0+is$ với $i\in \mathbb{Z}.$
+
+	Nghĩa là giá trị $\log_P(Q)$ phải là một phần tử trong $\mathbb{Z}/s\mathbb{Z}$, hay $\log_P(Q)$ tính theo modulo $s$, trong đó $s$ là bậc của $P$.
+	Để chính xác, ta coi $\log_P(Q)$ bằng với $n_0$. Khi định nghĩa giá trị trong $\mathbb{Z}/s\mathbb{Z}$, Logarit rời rạc elliptic sẽ thỏa mãn
+	$$ \log_P(Q_1 + Q_2) = \log_P(Q_1) + \log_P(Q_2) \ \ \ \forall Q_1, Q_2 \in E()$$
+
+
+\end{remark}
