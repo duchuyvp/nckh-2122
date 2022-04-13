@@ -534,6 +534,117 @@ Eve cần tìm ra phải cộng $P$ bao nhiêu lần để được $Q$. Phép c
 	Nghĩa là giá trị $\log_P(Q)$ phải là một phần tử trong $\mathbb{Z}/s\mathbb{Z}$, hay $\log_P(Q)$ tính theo modulo $s$, trong đó $s$ là bậc của $P$.
 	Để chính xác, ta coi $\log_P(Q)$ bằng với $n_0$. Khi định nghĩa giá trị trong $\mathbb{Z}/s\mathbb{Z}$, Logarit rời rạc elliptic sẽ thỏa mãn
 	$$ \log_P(Q_1 + Q_2) = \log_P(Q_1) + \log_P(Q_2) \ \ \ \forall Q_1, Q_2 \in E()$$
+\end{remark}
+
+\subsubsection{Thuật toán Nhân đôi và cộng}
+
+\textcolor{red}{Thuật toán bình phương và nhân tính $a^n \mod m$}
+\begin{lstlisting}[language=C++]
+	int power(int a, int n, int m) {
+		int res = 1;
+		while (n > 0) {
+			if (n & 1) res = (res * a) % m;
+			a = (a * a) % m;
+			n >>= 1;
+		}
+		return res;
+	}
+
+\end{lstlisting}
+
+
+Có vẻ khó để tìm ra giá trị $n$ từ 2 điểm $P, Q$ và phương trình $Q=nP$, hay giải một bài toán elliptic logarit rời rạc. Ta sẽ thảo luận về độ phức tạp của ECDLP ở phần sau.
+Để sử dụng hàm
+$$ \mathbb{Z} \longrightarrow E(\mathbb{F}_p), \quad \quad n \longmapsto nP,$$
+trong mật mã, ta cần tính $nP$ từ hai giá trị đã biết trước là $n$ và $P$. Nhưng nếu $n$ lớn, hoặc rất lớn, chắc chắn ta không muốn tính $nP$ bằng cách tính $P, 2P, 3P, 4P, \ldots $
+
+Cách hiệu quả nhất để tính $nP$ cũng tượng tự cách tính $a^n \pmod{m$}. Tuy nhiên, các phép toán trên đường cong elliptic được viết như phép cộng nên chúng tôi gọi
+	thuật toán là nhân đôi và cộng thay vì bình phương và nhân.
+	Với ý tưởng tương tự, chúng tôi mô tả thuật toán như sau
+
+
+	\begin{tabular}{|rl|}
+		% \centering
+		\hline
+		            & \textbf{Đầu vào:} Điểm $P \in E(\mathbb{F}_p)$ và số nguyên $n \geq 1$. \\
+		\textbf{1.} & Đặt $Q=P$ và $R=\mathcal{O}$                                            \\
+		\textbf{2.} & Lặp lại khi $n > 0$.                                                    \\
+		            & \textbf{3.} Nếu $n \equiv 1 \pmod{2}$, đặt $R = R+Q$.                   \\
+		            & \textbf{4.} Đặt $Q = 2Q$ và $n = \lfloor \frac{n}{2} \rfloor$.          \\
+		            & \textbf{5.} Nếu $n > 0$ tiếp tục vòng lặp và trở lại \textbf{bước 2}    \\
+		\textbf{6.} & Trả về điểm $R$, là kết quả của $nP$.                                   \\
+		\hline
+	\end{tabular}
+
+	\subsection{Mật mã đường cong elliptic}
+	Cuối cùng đã đến lúc áp dụng các đường cong elliptic vào mật mã. Chúng tôi bắt đầu với
+	ứng dụng đơn giản nhất, trao đổi khóa Diffie - Hellman, %  liên quan đến nhiều hơn
+	thay thế bài toán logarit rời rạc cho trường hữu hạn $F_p$ bằng
+	bài toán logarit rời rạc cho đường cong elliptic $E (\mathbb{F}_p)$. Sau đó, chúng tôi mô tả một elliptic
+	tương tự  hệ mã hóa khóa công khai ElGamal.
+
+	\subsubsection{Trao đổi khóa elliptic Diffie - Hellman}
+	Alice và Bob cùng đồng ý sử dụng một đường cong elliptic $E (\mathbb{F}_p)$ và một điểm $P \in E (\mathbb{F}_p)$.
+	Alice bí mật chọn một giá trị $n_A$, Bob chọn một giá trị $n_B$
+Cả hai sử dụng số bí mật của họ và tính
+$$\underbrace{Q_A = (n_AP)}_{\text{Alice tính}} \text{ và } \underbrace{Q_B = (n_BP)}_{\text{Bob tính}}$$.
+
+Sau đó, họ trao đổi với nhau giá trị vừa tính được, Alice gửi $Q_A$ cho Bob và Bob gửi
+$Q_B$ cho Alice. Sau đó tính $n_A Q_B$ và $ n_BQ_A $.
+Và họ có khóa bí mật chung
+$$ n_AQ_B = (n_An_B)P = n_BQ_A,$$
+
+
+\begin{example}
+	Alice và Bob quyết định sử dụng Elliptic Diffie - Hellman trên đường cong $E$, số nguyên tố $p$, và điểm $P$ sau:
+	$$E:Y^2 = X^3 + 324X + 1287, \quad p = 3581, \quad P = (920, 903) \in E(\mathbb{F}_3851).$$
+	Alice chọn $n_A = 1194$ và Bob chọn $n_B = 1759$.
+
+	$$\underbrace{Q_{A} = 1194 P = (2067, 2178) \in E(\mathbb{F}_{3851})}_{\text{Alice tính}} \text{ và } \underbrace{Q_{B} = 1759 P = (3684, 3125) \in E(\mathbb{F}_{3851})}_{\text{Bob tính}}$$.
+
+	Alice và Bob trao đổi với nhau giá trị vừa tính được, Alice gửi $Q_{A}$ cho Bob và Bob gửi
+	$Q_{B}$ cho Alice. Sau đó tính $n_A Q_{B}$ và $ n_BQ_{A} $.
+
+	$$\underbrace{n_{A}Q_B = 1194(3684, 3125) = (3347, 1242) \in  E(\mathbb{F}_{3851})}_{\text{Alice tính}} \text{ và } \underbrace{n_{B}Q_A = 1759(2067, 2178) = (3347, 1242) \in E(\mathbb{F}_{3851})}_{\text{Bob tính}}$$.
+
+\end{example}
+Bob và Alice đã trao đổi điểm bí mật $ (3347, 1242) $. Như sẽ được giải thích ở \ref{5.20}, họ nên bỏ qua tọa độ $ y $ và chỉ coi giá trị $ x = 3347 $ là giá trị
+được chia sẻ bí mật.
+
+Một cách để Eve phát hiện ra bí mật của Alice và Bob là giải bài toán logarit
+rời rạc trên đường cong eliiptic $ nP = Q_A $, vì khi Eve giải được bài toán này,
+thì cô ấy biết $ n_A $ và có thể sử dụng nó để tính $ n_AQ_B $, tương tự DHP ở \ref{sec:diffie-hellman}. Tuy nhiên để giải bài toán này
+rất khó và tốn thời gian.
+
+
+\begin{definition}
+	Cho đường cong elliptic $E(F_p)$ trên trường hữu hạn và $P \in
+		E(\mathbb{F}_p) $. Bài toán Elliptic Diffie-Hellman là bài toán tìm giá trị $ n_1n_2P $
+	từ các giá trị $ n_1P $ và $ n_2P $.
+\end{definition}
+
+
+\begin{remark}
+	Trao đổi khoá Elliptic Diffie-Hellman yêu cầu Alice và Bob trao
+	đổi điểm trên một đường cong elliptic, Một điểm $Q \in E(\mathbb{F}_P$ gồm 2 tọa độ  $Q = (x_Q, y_Q) $
+	trong đó $ x_Q, y_Q \in F_Q$. Vậy có vẻ Alice phải gửi Bob cả 2 số thuộc $\mathbb{F}_p$. Tuy nhiên, vì hai người biết giá trị của $A$, $B$ trong phương
+	trình elliptic $Y^2 = X^3 + AX + B$ nên Alice chỉ cần gửi giá trị của $x_Q$.
+
+	Khi đó, Bob sẽ giải ra được $2$ nghiệm của $y$ rồi sẽ chọn $1$ trong hai giá
+	trị. Nếu Bob chọn ``đúng'' $y$, nghĩa là anh ấy sử dụng $Q_A$ để tính toán, còn nếu chọn ``sai'',
+	thì Bob đang dùng $-Q_A$. Dù trong trường hợp nào, Bob cũng thu được
+	một trong hai kết quả
+	$$ \pm n_BQ_A = \pm (n_An_B)P$$.
+
+	Tương tụ, Alice cũng thu dược $\pm (n_An_B)P$. Sau đó, Alice và Bob dùng tọa độ $x$ để làm khóa chung vì giá trị $x$ như nhau bất kể cách chọn $y$.
 
 
 \end{remark}
+
+
+
+\subsubsection{Hệ mã hóa khóa công khai elliptic ElGamal}
+
+\subsection{Thuật toán phân tích thừa số đường cong Lenstra}
+
+\subsection{Đường cong elliptic trên trường $\mathbb{F}_2$ và $\mathbb{F}_{2^k}$}
